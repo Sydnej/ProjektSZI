@@ -1,6 +1,6 @@
-package main.java.model;
+package model;
 
-import main.java.model.weather.Weather;
+import model.weather.Weather;
 
 public class Tractor {
 

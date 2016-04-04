@@ -1,4 +1,4 @@
-package main.java.model.weather;
+package model.weather;
 
 public enum Season {
     SPRING,

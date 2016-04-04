@@ -1,4 +1,4 @@
-package main.java.model.weather;
+package model.weather;
 
 import java.util.Random;
 
@@ -16,16 +16,13 @@ public class Weather {
     public int generateTemperature() {
         Random random = new Random();
 
-        if(season == Season.SPRING) {
+        if (season == Season.SPRING) {
             temperature = random.nextInt(25) - 5;   // od -5 do 19
-        }
-        else if(season == Season.SUMMER) {
+        } else if (season == Season.SUMMER) {
             temperature = random.nextInt(20) + 15;  // od 15 do 34
-        }
-        else if(season == Season.AUTUMN) {
+        } else if (season == Season.AUTUMN) {
             temperature = random.nextInt(25) - 5;   // od -5 do 19
-        }
-        else {
+        } else {
             temperature = random.nextInt(30) - 20;  // od -20 do 9
         }
 
@@ -43,16 +40,13 @@ public class Weather {
     public int generateRain() {
         Random random = new Random();
 
-        if(season == Season.SPRING) {
+        if (season == Season.SPRING) {
             rain = random.nextInt(20) + 30;         // od 30 do 49
-        }
-        else if(season == Season.SUMMER) {
+        } else if (season == Season.SUMMER) {
             rain = random.nextInt(20) + 55;         // od 55 do 74
-        }
-        else if(season == Season.AUTUMN) {
+        } else if (season == Season.AUTUMN) {
             rain = random.nextInt(20) + 30;         // od 30 do 49
-        }
-        else {
+        } else {
             rain = random.nextInt(10) + 30;         // od 30 do 39
         }
 
