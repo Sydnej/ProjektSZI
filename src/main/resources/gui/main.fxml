@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.TilePane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" prefHeight="600" prefWidth="800"
+            fx:controller="gui.MainController"
+            style="-fx-background-color: rgb(28, 119, 44)">
+    <center>
+        <Canvas fx:id="canvas" height="600" width="600" style="-fx-background-color: green"/>
+    </center>
+    <right>
+        <TilePane fx:id="rightPane" prefWidth="200" style="-fx-background-color: darkgrey"/>
+    </right>
+</BorderPane>
