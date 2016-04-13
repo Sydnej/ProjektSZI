@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="800.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="gui.MainController" fx:id="rootPane">
+    <top>
+        <MenuBar>
+            <Menu text="Mapa">
+                <MenuItem text="Wybierz mapę" onAction="#handleSelectMap"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <AnchorPane>
+            <Canvas fx:id="canvas"/>
+        </AnchorPane>
+    </center>
+</BorderPane>

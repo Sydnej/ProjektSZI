@@ -16,14 +16,19 @@ public class Weather {
     public int generateTemperature() {
         Random random = new Random();
 
-        if (season == Season.SPRING) {
-            temperature = random.nextInt(25) - 5;   // od -5 do 19
-        } else if (season == Season.SUMMER) {
-            temperature = random.nextInt(20) + 15;  // od 15 do 34
-        } else if (season == Season.AUTUMN) {
-            temperature = random.nextInt(25) - 5;   // od -5 do 19
-        } else {
-            temperature = random.nextInt(30) - 20;  // od -20 do 9
+        switch (season) {
+            case SPRING:
+                temperature = random.nextInt(25) - 5;   // od -5 do 19
+                break;
+            case SUMMER:
+                temperature = random.nextInt(20) + 15;  // od 15 do 34
+                break;
+            case AUTUMN:
+                temperature = random.nextInt(25) - 5;   // od -5 do 19
+                break;
+            case WINTER:
+                temperature = random.nextInt(30) - 20;  // od -20 do 9
+                break;
         }
 
         return temperature;
@@ -40,14 +45,19 @@ public class Weather {
     public int generateRain() {
         Random random = new Random();
 
-        if (season == Season.SPRING) {
-            rain = random.nextInt(20) + 30;         // od 30 do 49
-        } else if (season == Season.SUMMER) {
-            rain = random.nextInt(20) + 55;         // od 55 do 74
-        } else if (season == Season.AUTUMN) {
-            rain = random.nextInt(20) + 30;         // od 30 do 49
-        } else {
-            rain = random.nextInt(10) + 30;         // od 30 do 39
+        switch (season) {
+            case SPRING:
+                rain = random.nextInt(20) + 30;         // od 30 do 49
+                break;
+            case SUMMER:
+                rain = random.nextInt(20) + 55;         // od 55 do 74
+                break;
+            case AUTUMN:
+                rain = random.nextInt(20) + 30;         // od 30 do 49
+                break;
+            case WINTER:
+                rain = random.nextInt(10) + 30;         // od 30 do 39
+                break;
         }
 
         return rain;
