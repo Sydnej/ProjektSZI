@@ -1,11 +1,8 @@
 package model;
 
-/**
- * Created by s396455 on 2016-04-07.
- */
 public class TSP_GA {
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         // Create and add our cities
         City city = new City(60, 200);
         TourManager.addCity(city);
@@ -64,4 +61,5 @@ public class TSP_GA {
         System.out.println("Solution:");
         System.out.println(pop.getFittest());
     }
+
 }

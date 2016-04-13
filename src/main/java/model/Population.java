@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by s396455 on 2016-04-07.
- */
 public class Population {
     // Holds population of tours
     Tour[] tours;
@@ -47,4 +44,5 @@ public class Population {
     public int populationSize() {
         return tours.length;
     }
+
 }

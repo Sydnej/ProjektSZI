@@ -1,12 +1,12 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Collections;
-/**
- * Created by s396455 on 2016-04-07.
- */
+import java.util.List;
+
 public class Tour {
     // Holds our tour of cities
-    private ArrayList tour = new ArrayList<City>();
+    private List tour = new ArrayList<City>();
     // Cache
     private double fitness = 0;
     private int distance = 0;
@@ -97,4 +97,5 @@ public class Tour {
         }
         return geneString;
     }
+
 }

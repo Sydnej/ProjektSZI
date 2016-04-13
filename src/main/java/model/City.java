@@ -1,9 +1,7 @@
 package model;
 
-/**
- * Created by s396455 on 2016-04-07.
- */
 public class City {
+
     int x;
     int y;
 
@@ -42,4 +40,5 @@ public class City {
     public String toString(){
         return getX()+", "+getY();
     }
+
 }

@@ -1,11 +1,11 @@
 package model;
+
 import java.util.ArrayList;
-/**
- * Created by s396455 on 2016-04-07.
- */
+import java.util.List;
+
 public class TourManager {
     // Holds our cities
-    private static ArrayList destinationCities = new ArrayList<City>();
+    private static List destinationCities = new ArrayList<City>();
 
     // Adds a destination city
     public static void addCity(City city) {

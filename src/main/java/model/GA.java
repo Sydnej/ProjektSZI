@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by s396455 on 2016-04-07.
- */
 public class GA {
     /* GA parameters */
     private static final double mutationRate = 0.015;

@@ -10,9 +10,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
@@ -27,8 +27,8 @@ public class MainController implements Initializable {
     private int height;
     private int width;
     private Image map;
-    private Image tractorL;
-    private Image tractorR;
+    private Image tractorLeft;
+    private Image tractorRight;
     private Image tractorUp;
     private Image tractorDown;
     private GraphicsContext graphicsContext;
@@ -53,7 +53,6 @@ public class MainController implements Initializable {
         graphicsContext.clearRect(0, 0, width, height);
         graphicsContext.drawImage(map, 0, 0);
 
-
         if (currentlyActiveKeys.contains("ESCAPE")) {
             stage.close();
         }
@@ -61,11 +60,11 @@ public class MainController implements Initializable {
         if (currentlyActiveKeys.contains("LEFT")) {
             tractorDirection = LEFT;
             positionX = positionX - 1.0;
-            graphicsContext.drawImage(tractorL, positionX, positionY);
+            graphicsContext.drawImage(tractorLeft, positionX, positionY);
         } else if (currentlyActiveKeys.contains("RIGHT")) {
             tractorDirection = RIGHT;
             positionX = positionX + 1.0;
-            graphicsContext.drawImage(tractorR, positionX, positionY);
+            graphicsContext.drawImage(tractorRight, positionX, positionY);
         } else if (currentlyActiveKeys.contains("DOWN")) {
             tractorDirection = DOWN;
             positionY = positionY + 1.0;
@@ -74,14 +73,13 @@ public class MainController implements Initializable {
             tractorDirection = UP;
             positionY = positionY - 1.0;
             graphicsContext.drawImage(tractorUp, positionX, positionY);
-
         } else {
             switch (tractorDirection) {
                 case LEFT:
-                    graphicsContext.drawImage(tractorL, positionX, positionY);
+                    graphicsContext.drawImage(tractorLeft, positionX, positionY);
                     break;
                 case RIGHT:
-                    graphicsContext.drawImage(tractorR, positionX, positionY);
+                    graphicsContext.drawImage(tractorRight, positionX, positionY);
                     break;
                 case UP:
                     graphicsContext.drawImage(tractorUp, positionX, positionY);
@@ -96,11 +94,9 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //pobieranie rozdzielczości ektanu
-        Toolkit pack = Toolkit.getDefaultToolkit();
-        Dimension size = pack.getScreenSize();
-        height = size.height;
-        width = size.width;
-        // System.out.print("height: " + height + " width: " + width);
+        height = (int) Screen.getPrimary().getVisualBounds().getHeight();
+        width = (int) Screen.getPrimary().getVisualBounds().getWidth();
+        System.out.print("height: " + height + " width: " + width);
 
         canvas.setWidth(width);
         canvas.setHeight(height);
@@ -122,9 +118,9 @@ public class MainController implements Initializable {
     }
 
     private void loadImages() {
-        map = new Image("img/new-map.png");
-        tractorL = new Image("img/tractor-left.png");
-        tractorR = new Image("img/tractor-right.png");
+        map = new Image("img/map.png");
+        tractorLeft = new Image("img/tractor-left.png");
+        tractorRight = new Image("img/tractor-right.png");
         tractorUp = new Image("img/tractor-up.png");
         tractorDown = new Image("img/tractor-down.png");
     }
