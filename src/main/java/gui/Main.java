@@ -23,25 +23,25 @@ import java.util.stream.IntStream;
 
 public class Main extends Application {
 
-    static Scene primaryScene;
-    static HashSet<String> currentlyActiveKeys = new HashSet<String>();
+    private static Scene primaryScene;
+    private static HashSet<String> currentlyActiveKeys = new HashSet<String>();
 
-    static int Height;
-    static int Width;
+    private static int Height;
+    private static int Width;
 
-    static  Image map;
-    static Image tractorL;
-    static Image tractorR;
-    static Image tractorUp;
-    static Image tractorDown;
-    static GraphicsContext graphicsContext;
+    private static  Image map;
+    private static Image tractorL;
+    private static Image tractorR;
+    private static Image tractorUp;
+    private static Image tractorDown;
+    private static GraphicsContext graphicsContext;
 
     //pozycja traktora:
-    static double positionX = 718;
-    static double positionY = 235;
+    private static double positionX = 718;
+    private static double positionY = 235;
 
     //obrót traktora
-    static String tractorDirection;
+    private static String tractorDirection;
 
     public static void main(String[] args) {
         launch(args);

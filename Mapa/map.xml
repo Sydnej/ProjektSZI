@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-2" ?>
 <map>
+	<fiel>new-map.png</fiel>
 	<fields>
 		<field>
 			<id>1</id>
@@ -365,471 +366,545 @@
 	</fields>
 	<graph>
 		<vertice>
+			<id>0</id>
+			<posX>716.5</posX>
+			<posY>231.5</posY>
+			<linked>
+				<verticeID>58</verticeID>
+			</linked>
+		</vertice>
+		<vertice>
 			<id>1</id>
 			<posX>102</posX>
-			<posY>178</posY>
+			<posY>185.5</posY>
 			<linked>
 				<verticeID>20</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
 			<id>2</id>
-			<posX>243</posX>
-			<posY>264</posY>
+			<posX>220.5</posX>
+			<posY>234</posY>
 			<linked>
 				<verticeID>22</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
 			<id>3</id>
-			<posX>162</posX>
-			<posY>410</posY>
+			<posX>139.5</posX>
+			<posY>380</posY>
 			<linked>
 				<verticeID>28</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>4</id>
+			<posX>26.5</posX>
+			<posY>544</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>31</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>5</id>
+			<posX>88.5</posX>
+			<posY>664</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>36</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>6</id>
+			<posX>290.5</posX>
+			<posY>139</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>23</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>7</id>
+			<posX>393</posX>
+			<posY>336.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>40</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>8</id>
+			<posX>333.5</posX>
+			<posY>531</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>54</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>9</id>
+			<posX>315.5</posX>
+			<posY>663</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>37</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>10</id>
+			<posX>514.5</posX>
+			<posY>133</posY>
 			<linked>
-				<verticeID></verticeID>
-			</linked>
-		</vertice>
-				<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
-			<linked>
-				<verticeID></verticeID>
+				<verticeID>43</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>11</id>
+			<posX>514</posX>
+			<posY>271.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>56</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>12</id>
+			<posX>546</posX>
+			<posY>414.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>55</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>13</id>
+			<posX>543.5</posX>
+			<posY>522</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>53</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>14</id>
+			<posX>720.5</posX>
+			<posY>113</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>44</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>15</id>
+			<posX>664.5</posX>
+			<posY>330</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>57</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>16</id>
+			<posX>673.5</posX>
+			<posY>521</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>51</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>17</id>
+			<posX>860</posX>
+			<posY>183.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>46</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>18</id>
+			<posX>863</posX>
+			<posY>367.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>48</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>19</id>
+			<posX>842.5</posX>
+			<posY>517</posY>
 			<linked>
-				<verticeID></verticeID>
-			</linked>
-		</vertice>
-				<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
-			<linked>
-				<verticeID></verticeID>
+				<verticeID>50</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>20</id>
+			<posX>139.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>1</verticeID>
+				<verticeID>27</verticeID>
+				<verticeID>21</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>21</id>
+			<posX>167.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>20</verticeID>
+				<verticeID>26</verticeID>
+				<verticeID>22</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>22</id>
+			<posX>220.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>2</verticeID>
+				<verticeID>21</verticeID>
+				<verticeID>23</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>23</id>
+			<posX>290.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>6</verticeID>
+				<verticeID>22</verticeID>
+				<verticeID>24</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>24</id>
+			<posX>398.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>23</verticeID>
+				<verticeID>25</verticeID>
+				<verticeID>41</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>25</id>
+			<posX>398.5</posX>
+			<posY>7.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>24</verticeID>
+				<verticeID>26</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>26</id>
+			<posX>167.5</posX>
+			<posY>7.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>25</verticeID>
+				<verticeID>21</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>27</id>
+			<posX>139.5</posX>
+			<posY>324.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>28</verticeID>
+				<verticeID>29</verticeID>
+				<verticeID>20</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>28</id>
+			<posX>139.5</posX>
+			<posY>343.5</posY>
 			<linked>
-				<verticeID></verticeID>
-			</linked>
-		</vertice>
-				<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
-			<linked>
-				<verticeID></verticeID>
+				<verticeID>3</verticeID>
+				<verticeID>27</verticeID>
+				<verticeID>34</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>29</id>
+			<posX>55.5</posX>
+			<posY>324.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>27</verticeID>
+				<verticeID>30</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>30</id>
+			<posX>55.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>29</verticeID>
+				<verticeID>31</verticeID>
+				<verticeID>32</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>31</id>
+			<posX>26.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>4</verticeID>
+				<verticeID>30</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>32</id>
+			<posX>222.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>30</verticeID>
+				<verticeID>33</verticeID>
+				<verticeID>35</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>33</id>
+			<posX>270.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>32</verticeID>
+				<verticeID>34</verticeID>
+				<verticeID>54</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>34</id>
+			<posX>270.5</posX>
+			<posY>543.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>33</verticeID>
+				<verticeID>28</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>35</id>
+			<posX>220.5</posX>
+			<posY>624.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>32</verticeID>
+				<verticeID>36</verticeID>
+				<verticeID>37</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>36</id>
+			<posX>88.5</posX>
+			<posY>624.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>5</verticeID>
+				<verticeID>35</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>37</id>
+			<posX>315.5</posX>
+			<posY>624.5</posY>
 			<linked>
-				<verticeID></verticeID>
-			</linked>
-		</vertice>
-				<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
-			<linked>
-				<verticeID></verticeID>
+				<verticeID>9</verticeID>
+				<verticeID>35</verticeID>
+				<verticeID>38</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>38</id>
+			<posX>439.5</posX>
+			<posY>624.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>37</verticeID>
+				<verticeID>39</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>39</id>
+			<posX>439.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>38</verticeID>
+				<verticeID>54</verticeID>
+				<verticeID>40</verticeID>
+				<verticeID>53</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>40</id>
+			<posX>439.5</posX>
+			<posY>336.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>7</verticeID>
+				<verticeID>39</verticeID>
+				<verticeID>41</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>41</id>
+			<posX>439.5</posX>
+			<posY>185.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>40</verticeID>
+				<verticeID>24</verticeID>
+				<verticeID>42</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>42</id>
+			<posX>439.5</posX>
+			<posY>160.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>41</verticeID>
+				<verticeID>43</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>43</id>
+			<posX>514.5</posX>
+			<posY>160.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>42</verticeID>
+				<verticeID>10</verticeID>
+				<verticeID>44</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>44</id>
+			<posX>720.5</posX>
+			<posY>160.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>43</verticeID>
+				<verticeID>14</verticeID>
+				<verticeID>45</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>45</id>
+			<posX>810.5</posX>
+			<posY>160.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>44</verticeID>
+				<verticeID>46</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>46</id>
+			<posX>810.5</posX>
+			<posY>183.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>45</verticeID>
+				<verticeID>17</verticeID>
+				<verticeID>47</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>47</id>
+			<posX>810.5</posX>
+			<posY>271.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>46</verticeID>
+				<verticeID>58</verticeID>
+				<verticeID>48</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>48</id>
+			<posX>810.5</posX>
+			<posY>367.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>47</verticeID>
+				<verticeID>18</verticeID>
+				<verticeID>49</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>49</id>
+			<posX>810.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>48</verticeID>
+				<verticeID>51</verticeID>
+				<verticeID>50</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>50</id>
+			<posX>842.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>49</verticeID>
+				<verticeID>19</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>51</id>
+			<posX>673.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>49</verticeID>
+				<verticeID>16</verticeID>
+				<verticeID>52</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>52</id>
+			<posX>578.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>51</verticeID>
+				<verticeID>53</verticeID>
+				<verticeID>55</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>53</id>
+			<posX>543.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>52</verticeID>
+				<verticeID>13</verticeID>
+				<verticeID>39</verticeID>
 			</linked>
 		</vertice>
 		<vertice>
-			<id></id>
-			<posX></posX>
-			<posY></posY>
+			<id>54</id>
+			<posX>333.5</posX>
+			<posY>480.5</posY>
 			<linked>
-				<verticeID></verticeID>
+				<verticeID>39</verticeID>
+				<verticeID>8</verticeID>
+				<verticeID>33</verticeID>
 			</linked>
 		</vertice>
-	
+		<vertice>
+			<id>55</id>
+			<posX>578.5</posX>
+			<posY>414.5</posY>
+			<linked>
+				<verticeID>52</verticeID>
+				<verticeID>12</verticeID>
+				<verticeID>56</verticeID>
+			</linked>
+		</vertice>
+		<vertice>
+			<id>56</id>
+			<posX>578.5</posX>
+			<posY>271.5</posY>
+			<linked>
+				<verticeID>55</verticeID>
+				<verticeID>11</verticeID>
+				<verticeID>57</verticeID>
+			</linked>
+		</vertice>
+		<vertice>
+			<id>57</id>
+			<posX>664.5</posX>
+			<posY>271.5</posY>
+			<linked>
+				<verticeID>56</verticeID>
+				<verticeID>15</verticeID>
+				<verticeID>58</verticeID>
+			</linked>
+		</vertice>
+		<vertice>
+			<id>58</id>
+			<posX>716.5</posX>
+			<posY>271.5</posY>
+			<linked>
+				<verticeID>57</verticeID>
+				<verticeID>0</verticeID>
+				<verticeID>47</verticeID>
+			</linked>
+		</vertice>
 	</graph>
 </map>
-
-
