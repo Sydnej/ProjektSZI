@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-2" ?>
 <map>
-	<fiel>new-map.png</fiel>
+	<fiel>map.png</fiel>
 	<fields>
 		<field>
 			<id>1</id>
