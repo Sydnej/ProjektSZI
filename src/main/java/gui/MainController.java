@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.Tractor;
 
 import java.io.File;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class MainController implements Initializable {
     @FXML
     private Canvas canvas;
     private Stage stage;
+    private Tractor tractor;
 
     private void prepareActionHandlers(Scene scene) {
         scene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
@@ -93,6 +95,10 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        tractor = new Tractor();
+        // wczytanie domyślnej mapy
+        tractor.getArea().loadData(null);
+
         //pobieranie rozdzielczości ektanu
         height = (int) Screen.getPrimary().getVisualBounds().getHeight();
         width = (int) Screen.getPrimary().getVisualBounds().getWidth();
@@ -112,13 +118,14 @@ public class MainController implements Initializable {
         fileChooser.setTitle("Otwórz plik mapy");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Pliki map", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            // TODO obsługa wczytywania mapy
+        if(selectedFile != null) {
+            tractor.getArea().loadData(selectedFile.getPath());
+            map = new Image("img/" + tractor.getArea().getAreaImagePath());
         }
     }
 
     private void loadImages() {
-        map = new Image("img/map.png");
+        map = new Image("img/" + tractor.getArea().getAreaImagePath());
         tractorLeft = new Image("img/tractor-left.png");
         tractorRight = new Image("img/tractor-right.png");
         tractorUp = new Image("img/tractor-up.png");

@@ -44,6 +44,7 @@ public class Main extends Application {
         }
 
         Area area = new Area();
+        area.loadData(null);
         for(Map.Entry<Integer, Field> entry : area.getFields().entrySet()) {
             System.out.println("id: " + entry.getKey());
             System.out.println("x: " + entry.getValue().getVertices()[0].getX());

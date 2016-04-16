@@ -8,16 +8,25 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 public class AreaDataLoader {
 
-    public void loadData(Map<Integer, Field> fields, Map<Integer, GraphVertice> graphVertices) {
+    private String areaImagePath;
+
+    public void loadData(Map<Integer, Field> fields, Map<Integer, GraphVertice> graphVertices, String filePath) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document d = db.parse(getClass().getResourceAsStream("/xml/map.xml"));
+            Document d;
+            if(filePath == null) {
+                d = db.parse(getClass().getResourceAsStream("/xml/map.xml"));
+            }
+            else {
+                d = db.parse(new File(filePath));
+            }
             d.getDocumentElement().normalize();
 
             NodeList fieldsList = d.getElementsByTagName("field");
@@ -71,9 +80,17 @@ public class AreaDataLoader {
 
                 graphVertices.put(graphVerticeId, graphVertice);
             }
+
+            Element element = (Element) d.getElementsByTagName("fiel").item(0);
+            areaImagePath = element.getTextContent();
         }
         catch(ParserConfigurationException | SAXException | IOException e) {
             throw new IllegalStateException();
         }
     }
+
+    public String getAreaImagePath() {
+        return areaImagePath;
+    }
+
 }
