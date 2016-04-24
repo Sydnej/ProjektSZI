@@ -64,10 +64,10 @@ public class AreaDataLoader {
             int fieldId = Integer.parseInt(fieldElement.getElementsByTagName("id").item(0).getTextContent());
             Field field = new Field(fieldId);
 
-            setCorner(field.getVertices()[0], fieldElement, Position.UPPER_LEFT);
-            setCorner(field.getVertices()[1], fieldElement, Position.UPPER_RIGHT);
-            setCorner(field.getVertices()[2], fieldElement, Position.BOTTOM_LEFT);
-            setCorner(field.getVertices()[3], fieldElement, Position.BOTTOM_RIGHT);
+            setCorner(field.getCorners()[0], fieldElement, Position.UPPER_LEFT);
+            setCorner(field.getCorners()[1], fieldElement, Position.UPPER_RIGHT);
+            setCorner(field.getCorners()[2], fieldElement, Position.BOTTOM_LEFT);
+            setCorner(field.getCorners()[3], fieldElement, Position.BOTTOM_RIGHT);
 
             fields.put(fieldId, field);
         }

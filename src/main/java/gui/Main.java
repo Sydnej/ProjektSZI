@@ -48,9 +48,9 @@ public class Main extends Application {
             System.out.println();
             for (int i = 0; i < 4; ++i) {
                 System.out.println("id: " + field.getId());
-                System.out.println("x: " + field.getVertices()[i].getX());
-                System.out.println("y: " + field.getVertices()[i].getY());
-                System.out.println("pos: " + field.getVertices()[i].getPosition());
+                System.out.println("x: " + field.getCorners()[i].getX());
+                System.out.println("y: " + field.getCorners()[i].getY());
+                System.out.println("pos: " + field.getCorners()[i].getPosition());
             }
         }
 

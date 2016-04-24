@@ -1,17 +1,33 @@
 package model.area;
 
+/**
+ * Klasa reprezentująca pole.
+ * <p>
+ * Pole jest opisywane przez identyfikator, tablicę wierzchołków oraz zestaw wskaźników pola o wartościach wyrażonych
+ * w %:
+ * <ul>
+ * <li>plony</li>
+ * <li>chwasty</li>
+ * <li>minerały</li>
+ * <li>nawodnienie</li>
+ * </ul>
+ * </p>
+ */
 public class Field {
 
     private int id;
-    private FieldVertex[] vertices;
-    private Level yields;
-    private Level weed;
+    private FieldVertex[] corners;
+
+    private double yields;
+    private double weed;
+    private double minerals;
+    private double hydration;
 
     public Field(int id) {
         this.id = id;
-        this.vertices = new FieldVertex[4];
-        for(int i=0; i<4; i++) {
-            vertices[i] = new FieldVertex();
+        this.corners = new FieldVertex[4];
+        for (int i = 0; i < 4; i++) {
+            corners[i] = new FieldVertex();
         }
     }
 
@@ -19,23 +35,39 @@ public class Field {
         return id;
     }
 
-    public FieldVertex[] getVertices() {
-        return vertices;
+    public FieldVertex[] getCorners() {
+        return corners;
     }
 
-    public Level getYields() {
+    public double getYields() {
         return yields;
     }
 
-    public Level getWeed() {
-        return weed;
-    }
-
-    public void setYields(Level yields) {
+    public void setYields(double yields) {
         this.yields = yields;
     }
 
-    public void setWeed(Level weed) {
+    public double getWeed() {
+        return weed;
+    }
+
+    public void setWeed(double weed) {
         this.weed = weed;
+    }
+
+    public double getMinerals() {
+        return minerals;
+    }
+
+    public void setMinerals(double minerals) {
+        this.minerals = minerals;
+    }
+
+    public double getHydration() {
+        return hydration;
+    }
+
+    public void setHydration(double hydration) {
+        this.hydration = hydration;
     }
 }
