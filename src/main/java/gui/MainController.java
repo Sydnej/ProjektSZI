@@ -1,7 +1,6 @@
 package gui;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -15,6 +14,8 @@ import javafx.stage.Stage;
 import model.Tractor;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -97,7 +98,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         tractor = new Tractor();
         // wczytanie domyślnej mapy
-        tractor.getArea().loadData(null);
+        tractor.getArea().loadData(getClass().getResourceAsStream("/xml/map.xml"));
 
         //pobieranie rozdzielczości ektanu
         height = (int) Screen.getPrimary().getVisualBounds().getHeight();
@@ -113,13 +114,14 @@ public class MainController implements Initializable {
         tractorDirection = DOWN;
     }
 
-    public void handleSelectMap(ActionEvent actionEvent) {
+    @FXML
+    private void handleSelectMap() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Otwórz plik mapy");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Pliki map", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if(selectedFile != null) {
-            tractor.getArea().loadData(selectedFile.getPath());
+        if (selectedFile != null) {
+            tractor.getArea().loadData(new FileInputStream(selectedFile));
             map = new Image("img/" + tractor.getArea().getAreaImagePath());
         }
     }

@@ -1,12 +1,13 @@
 package model.area;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Area {
 
     private Map<Integer, Field> fields;
-    private Map<Integer, GraphVertice> graphVertices;
+    private Map<Integer, GraphVertex> graphVertices;
     private AreaDataLoader areaDataLoader;
 
     public Area() {
@@ -19,7 +20,7 @@ public class Area {
         return fields;
     }
 
-    public Map<Integer, GraphVertice> getGraphVertices() {
+    public Map<Integer, GraphVertex> getGraphVertices() {
         return graphVertices;
     }
 
@@ -27,8 +28,8 @@ public class Area {
         return areaDataLoader.getAreaImagePath();
     }
 
-    public void loadData(String filePath) {
-        areaDataLoader.loadData(fields, graphVertices, filePath);
+    public void loadData(InputStream mapInputStream) {
+        areaDataLoader.loadData(fields, graphVertices, mapInputStream);
     }
 
 }

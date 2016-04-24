@@ -3,14 +3,14 @@ package model.area;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphVertice {
+public class GraphVertex {
 
     private int id;
     private double x;
     private double y;
     private List<Integer> linkedVertices;
 
-    public GraphVertice(int id, double x, double y) {
+    public GraphVertex(int id, double x, double y) {
         this.id = id;
         this.x = x;
         this.y = y;

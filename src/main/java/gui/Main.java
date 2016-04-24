@@ -7,12 +7,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.area.Area;
 import model.area.Field;
-import model.area.GraphVertice;
+import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class Main extends Application {
 
@@ -44,31 +43,25 @@ public class Main extends Application {
         }
 
         Area area = new Area();
-        area.loadData(null);
-        for(Map.Entry<Integer, Field> entry : area.getFields().entrySet()) {
-            System.out.println("id: " + entry.getKey());
-            System.out.println("x: " + entry.getValue().getVertices()[0].getX());
-            System.out.println("y: " + entry.getValue().getVertices()[0].getY());
-            System.out.println("pos: " + entry.getValue().getVertices()[0].getPosition());
-            System.out.println("x: " + entry.getValue().getVertices()[1].getX());
-            System.out.println("y: " + entry.getValue().getVertices()[1].getY());
-            System.out.println("pos: " + entry.getValue().getVertices()[1].getPosition());
-            System.out.println("x: " + entry.getValue().getVertices()[2].getX());
-            System.out.println("y: " + entry.getValue().getVertices()[2].getY());
-            System.out.println("pos: " + entry.getValue().getVertices()[2].getPosition());
-            System.out.println("x: " + entry.getValue().getVertices()[3].getX());
-            System.out.println("y: " + entry.getValue().getVertices()[3].getY());
-            System.out.println("pos: " + entry.getValue().getVertices()[3].getPosition());
+        area.loadData(getClass().getResourceAsStream("/xml/map.xml"));
+        for (Field field : area.getFields().values()) {
             System.out.println();
+            for (int i = 0; i < 4; ++i) {
+                System.out.println("id: " + field.getId());
+                System.out.println("x: " + field.getVertices()[i].getX());
+                System.out.println("y: " + field.getVertices()[i].getY());
+                System.out.println("pos: " + field.getVertices()[i].getPosition());
+            }
         }
+
         System.out.println();
         System.out.println();
-        for(Map.Entry<Integer, GraphVertice> entry : area.getGraphVertices().entrySet()) {
-            System.out.println("id: " + entry.getKey());
-            System.out.println("x: " + entry.getValue().getX());
-            System.out.println("y: " + entry.getValue().getY());
-            for(int i=0; i<entry.getValue().getLinkedVertices().size(); i++) {
-                System.out.print(entry.getValue().getLinkedVertices().get(i) + " ");
+        for (GraphVertex vertex : area.getGraphVertices().values()) {
+            System.out.println("id: " + vertex.getId());
+            System.out.println("x: " + vertex.getX());
+            System.out.println("y: " + vertex.getY());
+            for (int linkedVertex : vertex.getLinkedVertices()) {
+                System.out.print(linkedVertex + " ");
             }
             System.out.println();
         }

@@ -8,85 +8,78 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public class AreaDataLoader {
 
     private String areaImagePath;
 
-    public void loadData(Map<Integer, Field> fields, Map<Integer, GraphVertice> graphVertices, String filePath) {
+    public void loadData(Map<Integer, Field> fields, Map<Integer, GraphVertex> graphVertices, InputStream
+            mapInputStream) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document d;
-            if(filePath == null) {
-                d = db.parse(getClass().getResourceAsStream("/xml/map.xml"));
-            }
-            else {
-                d = db.parse(new File(filePath));
-            }
+            Document d = db.parse(mapInputStream);
             d.getDocumentElement().normalize();
 
-            NodeList fieldsList = d.getElementsByTagName("field");
-            for(int i=0; i<fieldsList.getLength(); i++) {
-                Element element = (Element) fieldsList.item(i);
+            parseFields(fields, d);
+            parseGraphVertices(graphVertices, d);
 
-                int fieldId = Integer.parseInt(element.getElementsByTagName("id").item(0).getTextContent());
-                Field field = new Field(fieldId);
-
-                int x = Integer.parseInt(((Element) element.getElementsByTagName("upper-left").item(0)).getElementsByTagName("posX").item(0).getTextContent());
-                int y = Integer.parseInt(((Element) element.getElementsByTagName("upper-left").item(0)).getElementsByTagName("posY").item(0).getTextContent());
-                field.getVertices()[0].setPosition(Position.UPPER_LEFT);
-                field.getVertices()[0].setX(x);
-                field.getVertices()[0].setY(y);
-
-                x = Integer.parseInt(((Element) element.getElementsByTagName("upper-right").item(0)).getElementsByTagName("posX").item(0).getTextContent());
-                y = Integer.parseInt(((Element) element.getElementsByTagName("upper-right").item(0)).getElementsByTagName("posY").item(0).getTextContent());
-                field.getVertices()[1].setPosition(Position.UPPER_RIGHT);
-                field.getVertices()[1].setX(x);
-                field.getVertices()[1].setY(y);
-
-                x = Integer.parseInt(((Element) element.getElementsByTagName("bottom-left").item(0)).getElementsByTagName("posX").item(0).getTextContent());
-                y = Integer.parseInt(((Element) element.getElementsByTagName("bottom-left").item(0)).getElementsByTagName("posY").item(0).getTextContent());
-                field.getVertices()[2].setPosition(Position.BOTTOM_LEFT);
-                field.getVertices()[2].setX(x);
-                field.getVertices()[2].setY(y);
-
-                x = Integer.parseInt(((Element) element.getElementsByTagName("bottom-right").item(0)).getElementsByTagName("posX").item(0).getTextContent());
-                y = Integer.parseInt(((Element) element.getElementsByTagName("bottom-right").item(0)).getElementsByTagName("posY").item(0).getTextContent());
-                field.getVertices()[3].setPosition(Position.BOTTOM_RIGHT);
-                field.getVertices()[3].setX(x);
-                field.getVertices()[3].setY(y);
-
-                fields.put(fieldId, field);
-            }
-
-            NodeList graphVerticesList = d.getElementsByTagName("vertice");
-            for(int i=0; i<graphVerticesList.getLength(); i++) {
-                Element element = (Element) graphVerticesList.item(i);
-
-                int graphVerticeId = Integer.parseInt(element.getElementsByTagName("id").item(0).getTextContent());
-                double x = Double.parseDouble(element.getElementsByTagName("posX").item(0).getTextContent());
-                double y = Double.parseDouble(element.getElementsByTagName("posY").item(0).getTextContent());
-
-                GraphVertice graphVertice = new GraphVertice(graphVerticeId, x, y);
-
-                for(int j=0; j<((Element) element.getElementsByTagName("linked").item(0)).getElementsByTagName("verticeID").getLength(); j++) {
-                    int linkedVerticeId = Integer.parseInt(((Element) element.getElementsByTagName("linked").item(0)).getElementsByTagName("verticeID").item(j).getTextContent());
-                    graphVertice.addLinkedVertice(linkedVerticeId);
-                }
-
-                graphVertices.put(graphVerticeId, graphVertice);
-            }
-
-            Element element = (Element) d.getElementsByTagName("fiel").item(0);
+            Element element = (Element) d.getElementsByTagName("mapImage").item(0);
             areaImagePath = element.getTextContent();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new IllegalStateException(e);
         }
-        catch(ParserConfigurationException | SAXException | IOException e) {
-            throw new IllegalStateException();
+    }
+
+    private void parseGraphVertices(Map<Integer, GraphVertex> graphVertices, Document d) {
+        NodeList graphVerticesList = d.getElementsByTagName("vertex");
+        for (int i = 0; i < graphVerticesList.getLength(); i++) {
+            Element element = (Element) graphVerticesList.item(i);
+
+            int graphVertexId = Integer.parseInt(element.getElementsByTagName("id").item(0).getTextContent());
+            double x = Double.parseDouble(element.getElementsByTagName("posX").item(0).getTextContent());
+            double y = Double.parseDouble(element.getElementsByTagName("posY").item(0).getTextContent());
+
+            GraphVertex graphVertex = new GraphVertex(graphVertexId, x, y);
+
+            for (int j = 0; j < ((Element) element.getElementsByTagName("linked").item(0)).getElementsByTagName
+                    ("vertexID").getLength(); j++) {
+                int linkedVertexId = Integer.parseInt(((Element) element.getElementsByTagName("linked").item(0))
+                        .getElementsByTagName("vertexID").item(j).getTextContent());
+                graphVertex.addLinkedVertice(linkedVertexId);
+            }
+
+            graphVertices.put(graphVertexId, graphVertex);
         }
+    }
+
+    private void parseFields(Map<Integer, Field> fields, Document d) {
+        NodeList fieldsList = d.getElementsByTagName("field");
+        for (int i = 0; i < fieldsList.getLength(); i++) {
+            Element fieldElement = (Element) fieldsList.item(i);
+
+            int fieldId = Integer.parseInt(fieldElement.getElementsByTagName("id").item(0).getTextContent());
+            Field field = new Field(fieldId);
+
+            setCorner(field.getVertices()[0], fieldElement, Position.UPPER_LEFT);
+            setCorner(field.getVertices()[1], fieldElement, Position.UPPER_RIGHT);
+            setCorner(field.getVertices()[2], fieldElement, Position.BOTTOM_LEFT);
+            setCorner(field.getVertices()[3], fieldElement, Position.BOTTOM_RIGHT);
+
+            fields.put(fieldId, field);
+        }
+    }
+
+    private void setCorner(FieldVertex fieldVertex, Element fieldElement, Position position) {
+        Element cornerElement = (Element) fieldElement.getElementsByTagName(position.getXmlElementName()).item(0);
+        int x = Integer.parseInt(cornerElement.getElementsByTagName("posX").item(0).getTextContent());
+        int y = Integer.parseInt(cornerElement.getElementsByTagName("posY").item(0).getTextContent());
+        fieldVertex.setPosition(position);
+        fieldVertex.setX(x);
+        fieldVertex.setY(y);
     }
 
     public String getAreaImagePath() {

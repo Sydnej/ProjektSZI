@@ -1,6 +1,6 @@
 package model.area;
 
-public class FieldVertice {
+public class FieldVertex {
 
     private int x;
     private int y;

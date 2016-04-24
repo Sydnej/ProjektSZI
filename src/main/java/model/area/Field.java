@@ -3,15 +3,15 @@ package model.area;
 public class Field {
 
     private int id;
-    private FieldVertice[] vertices;
+    private FieldVertex[] vertices;
     private Level yields;
     private Level weed;
 
     public Field(int id) {
         this.id = id;
-        this.vertices = new FieldVertice[4];
+        this.vertices = new FieldVertex[4];
         for(int i=0; i<4; i++) {
-            vertices[i] = new FieldVertice();
+            vertices[i] = new FieldVertex();
         }
     }
 
@@ -19,7 +19,7 @@ public class Field {
         return id;
     }
 
-    public FieldVertice[] getVertices() {
+    public FieldVertex[] getVertices() {
         return vertices;
     }
 
