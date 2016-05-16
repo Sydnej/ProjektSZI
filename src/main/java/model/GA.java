@@ -1,5 +1,7 @@
 package model;
 
+import model.area.GraphVertex;
+
 public class GA {
     /* GA parameters */
     private static final double mutationRate = 0.015;
@@ -51,11 +53,11 @@ public class GA {
         for (int i = 0; i < child.tourSize(); i++) {
             // If our start position is less than the end position
             if (startPos < endPos && i > startPos && i < endPos) {
-                child.setCity(i, parent1.getCity(i));
+                child.setVertex(i, parent1.getVertex(i));
             } // If our start position is larger
             else if (startPos > endPos) {
                 if (!(i < startPos && i > endPos)) {
-                    child.setCity(i, parent1.getCity(i));
+                    child.setVertex(i, parent1.getVertex(i));
                 }
             }
         }
@@ -63,12 +65,12 @@ public class GA {
         // Loop through parent2's city tour
         for (int i = 0; i < parent2.tourSize(); i++) {
             // If child doesn't have the city add it
-            if (!child.containsCity(parent2.getCity(i))) {
+            if (!child.containsCity(parent2.getVertex(i))) {
                 // Loop to find a spare position in the child's tour
                 for (int ii = 0; ii < child.tourSize(); ii++) {
                     // Spare position found, add city
-                    if (child.getCity(ii) == null) {
-                        child.setCity(ii, parent2.getCity(i));
+                    if (child.getVertex(ii) == null) {
+                        child.setVertex(ii, parent2.getVertex(i));
                         break;
                     }
                 }
@@ -87,12 +89,12 @@ public class GA {
                 int tourPos2 = (int) (tour.tourSize() * Math.random());
 
                 // Get the cities at target position in tour
-                City city1 = tour.getCity(tourPos1);
-                City city2 = tour.getCity(tourPos2);
+                GraphVertex city1 = tour.getVertex(tourPos1);
+                GraphVertex city2 = tour.getVertex(tourPos2);
 
                 // Swap them around
-                tour.setCity(tourPos2, city1);
-                tour.setCity(tourPos1, city2);
+                tour.setVertex(tourPos2, city1);
+                tour.setVertex(tourPos1, city2);
             }
         }
     }
