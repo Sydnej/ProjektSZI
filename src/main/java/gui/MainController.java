@@ -145,4 +145,35 @@ public class MainController implements Initializable {
             }
         }.start();
     }
+
+    public void goToThePoint(double posX, double posY) {
+        if(posX >= positionX) {
+            tractorDirection = Direction.RIGHT;
+            while(posX > positionX) {
+                positionX = positionX + 1.0;
+                graphicsContext.drawImage(tractorRight, positionX, positionY);
+            }
+        }
+        else {
+            tractorDirection = Direction.LEFT;
+            while(posX < positionX) {
+                positionX = positionX - 1.0;
+                graphicsContext.drawImage(tractorLeft, positionX, positionY);
+            }
+        }
+        if(posY >= positionY) {
+            tractorDirection = Direction.UP;
+            while(posY > positionY) {
+                positionY = positionY + 1.0;
+                graphicsContext.drawImage(tractorUp, positionX, positionY);
+            }
+        }
+        else {
+            tractorDirection = Direction.DOWN;
+            while(posY < positionY) {
+                positionY = positionY - 1.0;
+                graphicsContext.drawImage(tractorDown, positionX, positionY);
+            }
+        }
+    }
 }
