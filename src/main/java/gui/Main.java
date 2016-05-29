@@ -10,6 +10,7 @@ import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
+import model.FuzzyLogic;
 
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Weather weather = new Weather();
+        FuzzyLogic flogic = new FuzzyLogic();
         weather.setSeason(Season.WINTER);
         System.out.println("humidity:   " + weather.generateHumidity() + "%");
         System.out.println("rain:   " + weather.generateRain() + " mm/m2");
@@ -63,8 +65,10 @@ public class Main extends Application {
             for (int linkedVertex : vertex.getLinkedVertices()) {
                 System.out.print(linkedVertex + " ");
             }
+
             System.out.println();
         }
+        System.out.println("Priorytet: " + flogic.CountPriority(40,30,70)); // (wilgotnosc, temperatura, jakosc)
     }
     //GA
 
