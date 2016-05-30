@@ -30,20 +30,6 @@ public class Main extends Application {
         System.out.println("temperature:   " + weather.generateTemperature() + " st. C");
         System.out.println();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
-            Pane page = loader.load();
-            primaryStage.setTitle("Traktor");
-            primaryStage.setFullScreen(true);
-            Scene primaryScene = new Scene(page);
-            primaryStage.setScene(primaryScene);
-            MainController controller = loader.getController();
-            controller.setupListenersAndStartAnimation(primaryStage);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         Area area = new Area();
         area.loadData(getClass().getResourceAsStream("/xml/map.xml"));
         for (Field field : area.getFields().values()) {
@@ -68,6 +54,22 @@ public class Main extends Application {
 
             System.out.println();
         }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            Pane page = loader.load();
+            primaryStage.setTitle("Traktor");
+            primaryStage.setFullScreen(true);
+            Scene primaryScene = new Scene(page);
+            primaryStage.setScene(primaryScene);
+            MainController controller = loader.getController();
+            controller.setupListenersAndStartAnimation(primaryStage);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         System.out.println("Priorytet: " + flogic.CountPriority(40,30,70)); // (wilgotnosc, temperatura, jakosc)
     }
     //GA

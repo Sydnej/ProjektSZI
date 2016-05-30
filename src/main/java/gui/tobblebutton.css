@@ -1,0 +1,9 @@
+.toggle-button {
+
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.toggle-button:selected {
+    -fx-background-color: blue;
+}

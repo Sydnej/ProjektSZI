@@ -12,6 +12,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Tractor;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.StackPaneBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +27,7 @@ import static gui.Direction.*;
 
 public class MainController implements Initializable {
 
+    final ToggleButton toggle = new ToggleButton();
     private Set<String> currentlyActiveKeys = new HashSet<>();
     private int height;
     private int width;
@@ -112,6 +115,7 @@ public class MainController implements Initializable {
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
         tractorDirection = DOWN;
+        ButtonLoad();
     }
 
     @FXML
@@ -144,5 +148,18 @@ public class MainController implements Initializable {
                 tickAndRender();
             }
         }.start();
+    }
+    public void ButtonLoad(){
+        System.out.println("Button load... ");
+        toggle.getStylesheets().add(this.getClass().getResource(
+                "togglebutton.css"
+        ).toExternalForm());
+        toggle.setMinSize(148, 148); toggle.setMaxSize(148, 148);
+        stage.setScene(new Scene(
+                StackPaneBuilder.create()
+                        .children(toggle)
+                        .style("-fx-padding:10; -fx-background-color: cornsilk;")
+                        .build()
+        ));
     }
 }
