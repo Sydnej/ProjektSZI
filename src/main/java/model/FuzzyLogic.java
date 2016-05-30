@@ -14,7 +14,7 @@ public class FuzzyLogic {
 
     public int CountPriority(int w, int t, int j) {
         // Load from 'FCL' file
-        String fileName = "controller.fcl";
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\java\\model\\controller.fcl";
 
 
 

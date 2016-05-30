@@ -12,8 +12,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Tractor;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.StackPaneBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +25,6 @@ import static gui.Direction.*;
 
 public class MainController implements Initializable {
 
-    final ToggleButton toggle = new ToggleButton();
     private Set<String> currentlyActiveKeys = new HashSet<>();
     private int height;
     private int width;
@@ -115,7 +112,6 @@ public class MainController implements Initializable {
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
         tractorDirection = DOWN;
-        ButtonLoad();
     }
 
     @FXML
@@ -149,17 +145,35 @@ public class MainController implements Initializable {
             }
         }.start();
     }
-    public void ButtonLoad(){
-        System.out.println("Button load... ");
-        toggle.getStylesheets().add(this.getClass().getResource(
-                "togglebutton.css"
-        ).toExternalForm());
-        toggle.setMinSize(148, 148); toggle.setMaxSize(148, 148);
-        stage.setScene(new Scene(
-                StackPaneBuilder.create()
-                        .children(toggle)
-                        .style("-fx-padding:10; -fx-background-color: cornsilk;")
-                        .build()
-        ));
+
+    public void goToThePoint(double posX, double posY) {
+        if(posX >= positionX) {
+            tractorDirection = Direction.RIGHT;
+            while(posX > positionX) {
+                positionX = positionX + 1.0;
+                graphicsContext.drawImage(tractorRight, positionX, positionY);
+            }
+        }
+        else {
+            tractorDirection = Direction.LEFT;
+            while(posX < positionX) {
+                positionX = positionX - 1.0;
+                graphicsContext.drawImage(tractorLeft, positionX, positionY);
+            }
+        }
+        if(posY >= positionY) {
+            tractorDirection = Direction.UP;
+            while(posY > positionY) {
+                positionY = positionY + 1.0;
+                graphicsContext.drawImage(tractorUp, positionX, positionY);
+            }
+        }
+        else {
+            tractorDirection = Direction.DOWN;
+            while(posY < positionY) {
+                positionY = positionY - 1.0;
+                graphicsContext.drawImage(tractorDown, positionX, positionY);
+            }
+        }
     }
 }
