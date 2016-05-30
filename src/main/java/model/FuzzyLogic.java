@@ -3,20 +3,16 @@ package model; /**
  */
 
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.FunctionBlock;
 
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
-
-import net.sourceforge.jFuzzyLogic.rule.Variable;
+import java.net.URL;
 
 
 public class FuzzyLogic {
 
     public int CountPriority(int w, int t, int j) {
         // Load from 'FCL' file
-        String fileName = System.getProperty("user.dir") + "\\src\\main\\java\\model\\controller.fcl";
-
-
+        URL resource = getClass().getResource("controller.fcl");
+        String fileName = resource.getFile();
 
 
         int wilgotnosc = w; // do 100%
@@ -24,7 +20,7 @@ public class FuzzyLogic {
         int jakosc = j; // do 100%
 
         FIS fis = FIS.load(fileName, true);
-        if( fis == null ) {
+        if (fis == null) {
             System.err.println("Nie moge zaladowc pliku: '" + fileName + "'");
             return 0;
         }
@@ -37,7 +33,7 @@ public class FuzzyLogic {
 
         System.out.println("start...");
         System.out.println("Priorytet:" + fis.getVariable("priorytet").getValue());
-        int pvalue =(int) fis.getVariable("priorytet").getValue();
+        int pvalue = (int) fis.getVariable("priorytet").getValue();
         return pvalue;
     }
 }
