@@ -29,12 +29,15 @@ public class FileReader {
               attributes = new ArrayList<DiscreteAttribute>();
               r = new Record();
 			   System.out.println(line);
-              if(Hw1.NUM_ATTRS != st.countTokens()) {
+			   System.out.println(Hw1.NUM_ATTRS);
+			   System.out.println(st.countTokens());
+
+              if((Hw1.NUM_ATTRS-1) != st.countTokens()) {
             	  throw new Exception("Unknown number of attributes!");
               }
               	
 			  @SuppressWarnings("unused")
-			  String day = st.nextToken();
+			  //String day = st.nextToken();
 			  String outlook = st.nextToken();
 			  String temperature = st.nextToken();
 			  String humidity = st.nextToken();
