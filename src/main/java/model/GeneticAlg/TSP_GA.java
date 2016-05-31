@@ -1,5 +1,8 @@
-package model;
+package model.GeneticAlg;
 
+import model.GeneticAlg.GA;
+import model.GeneticAlg.Population;
+import model.GeneticAlg.TourManager;
 import model.area.GraphVertex;
 
 public class TSP_GA {

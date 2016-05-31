@@ -1,5 +1,6 @@
-package model;
+package model.GeneticAlg;
 
+import model.GeneticAlg.City;
 import model.area.GraphVertex;
 
 import java.util.ArrayList;

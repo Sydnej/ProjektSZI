@@ -1,7 +1,5 @@
 package model.area;
 
-import model.City;
-
 import java.util.ArrayList;
 import java.util.List;
 

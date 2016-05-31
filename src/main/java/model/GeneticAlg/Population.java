@@ -1,4 +1,4 @@
-package model;
+package model.GeneticAlg;
 
 public class Population {
     // Holds population of tours
