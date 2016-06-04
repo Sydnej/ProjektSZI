@@ -1,22 +1,30 @@
 package gui;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Tractor;
+import model.area.Field;
+import model.weather.Season;
+import model.weather.Weather;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -25,6 +33,22 @@ import static gui.Direction.*;
 
 public class MainController implements Initializable {
 
+    @FXML
+    private Label temperatureLabel;
+    @FXML
+    private Label humidityLabel;
+    @FXML
+    private Label rainLabel;
+    @FXML
+    private TableView<Field> fieldsTable;
+    @FXML
+    private TableColumn<Field, Integer> fieldNoColumn;
+    @FXML
+    private TableColumn<Field, Integer> yieldsColumn;
+    @FXML
+    private TableColumn<Field, Integer> weedsColumn;
+    @FXML
+    private TableColumn<Field, Integer> mineralsColumn;
     private Set<String> currentlyActiveKeys = new HashSet<>();
     private int height;
     private int width;
@@ -45,6 +69,7 @@ public class MainController implements Initializable {
     private Canvas canvas;
     private Stage stage;
     private Tractor tractor;
+    private Weather weather = new Weather();
 
     private void prepareActionHandlers(Scene scene) {
         scene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
@@ -100,18 +125,45 @@ public class MainController implements Initializable {
         // wczytanie domyślnej mapy
         tractor.getArea().loadData(getClass().getResourceAsStream("/xml/map.xml"));
 
+        startWeather();
+        initWeatherPropertySheet();
+        initFieldsTable();
+
+
         //pobieranie rozdzielczości ektanu
         height = (int) Screen.getPrimary().getVisualBounds().getHeight();
         width = (int) Screen.getPrimary().getVisualBounds().getWidth();
         System.out.print("height: " + height + " width: " + width);
 
-        canvas.setWidth(width);
-        canvas.setHeight(height);
+//        canvas.setWidth(width);
+//        canvas.setHeight(height);
 
         //ładowanie obiektów
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
         tractorDirection = DOWN;
+    }
+
+    private void initWeatherPropertySheet() {
+        temperatureLabel.textProperty().bind(Bindings.selectString(weather.temperatureProperty()));
+        humidityLabel.textProperty().bind(Bindings.selectString(weather.humidityProperty()));
+        rainLabel.textProperty().bind(Bindings.selectString(weather.rainProperty().asString()));
+    }
+
+    private void startWeather() {
+        weather.setSeason(Season.SPRING);
+        Thread thread = new Thread(new WeatherLoop(tractor.getArea(), weather));
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void initFieldsTable() {
+        fieldNoColumn.setCellValueFactory(param -> param.getValue().idProperty().asObject());
+        yieldsColumn.setCellValueFactory(param -> param.getValue().yieldsProperty().asObject());
+        weedsColumn.setCellValueFactory(param -> param.getValue().weedsProperty().asObject());
+        mineralsColumn.setCellValueFactory(param -> param.getValue().mineralsProperty().asObject());
+        Collection<Field> fields = tractor.getArea().getFields().values();
+        fieldsTable.getItems().addAll(fields);
     }
 
     @FXML
@@ -147,30 +199,28 @@ public class MainController implements Initializable {
     }
 
     public void goToThePoint(double posX, double posY) {
-        if(posX >= positionX) {
+        if (posX >= positionX) {
             tractorDirection = Direction.RIGHT;
-            while(posX > positionX) {
+            while (posX > positionX) {
                 positionX = positionX + 1.0;
                 graphicsContext.drawImage(tractorRight, positionX, positionY);
             }
-        }
-        else {
+        } else {
             tractorDirection = Direction.LEFT;
-            while(posX < positionX) {
+            while (posX < positionX) {
                 positionX = positionX - 1.0;
                 graphicsContext.drawImage(tractorLeft, positionX, positionY);
             }
         }
-        if(posY >= positionY) {
+        if (posY >= positionY) {
             tractorDirection = Direction.UP;
-            while(posY > positionY) {
+            while (posY > positionY) {
                 positionY = positionY + 1.0;
                 graphicsContext.drawImage(tractorUp, positionX, positionY);
             }
-        }
-        else {
+        } else {
             tractorDirection = Direction.DOWN;
-            while(posY < positionY) {
+            while (posY < positionY) {
                 positionY = positionY - 1.0;
                 graphicsContext.drawImage(tractorDown, positionX, positionY);
             }

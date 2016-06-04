@@ -19,7 +19,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-
         GraphVertex city0 = new GraphVertex(0, 716.5, 231.5);
         TourManager.addVertex(city0);
         GraphVertex city1 = new GraphVertex(1, 102, 185.5);
@@ -61,7 +60,7 @@ public class Main extends Application {
         GraphVertex city19 = new GraphVertex(19, 842.5, 517);
         TourManager.addVertex(city19);
 
-//        launch(args);
+        launch(args);
 
         FuzzyLogic flogic = new FuzzyLogic();
         Field field = new Field(0);
@@ -78,9 +77,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         Weather weather = new Weather();
         weather.setSeason(Season.WINTER);
-        System.out.println("humidity:   " + weather.generateHumidity() + "%");
-        System.out.println("rain:   " + weather.generateRain() + " mm/m2");
-        System.out.println("temperature:   " + weather.generateTemperature() + " st. C");
+        System.out.println("humidity:   " + weather.getHumidity() + "%");
+        System.out.println("rain:   " + weather.getRain() + " mm/m2");
+        System.out.println("temperature:   " + weather.getTemperature() + " st. C");
         System.out.println();
 
         Area area = new Area();
