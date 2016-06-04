@@ -1,41 +1,63 @@
 FUNCTION_BLOCK controller	// Definicja bloku (moze byc wiecej blokow w pliku)
 
 VAR_INPUT				// Definiuje zmienne wejsciowe
-	wilgotnosc : REAL;
-	temperatura : REAL;
-	jakosc : REAL;
+	yields : REAL;
+	minerals : REAL;
+	weeds : REAL;
 END_VAR
 
 VAR_OUTPUT				// Definiuje zmienne wyjsciowe
-	priorytet : REAL;
+	fertilizationPriority : REAL;
+	cultivationPriority : REAL;
+	harvestPriority : REAL;
 END_VAR
 
-FUZZIFY wilgotnosc
-	TERM mala := (15, 1) (30, 0) ;
-	TERM srednia := (20, 0) (35, 1) (45, 1) (65,0);
-	TERM duza := (55, 0) (75, 1);
+FUZZIFY yields
+	TERM little := (15, 1) (30, 0) ;
+	TERM middle := (20, 0) (35, 1) (45, 1) (65,0);
+	TERM much := (55, 0) (75, 1);
 END_FUZZIFY
 
-FUZZIFY temperatura
-	TERM niska := (0, 1) (12, 0) ;
-	TERM srednia := (10,0) (14,1) (20,1) (27,0);
-	TERM wysoka := (25,0) (30,1);
+FUZZIFY minerals
+	TERM little := (0, 1) (12, 0) ;
+	TERM middle := (10,0) (14,1) (20,1) (27,0);
+	TERM much := (25,0) (30,1);
 END_FUZZIFY
 
-FUZZIFY jakosc
-	TERM slaba := (15, 1) (30, 0) ;
-    TERM srednia := (20, 0) (35, 1) (45, 1) (65,0);
-   	TERM dobra := (55, 0) (75, 1);
+FUZZIFY weeds
+	TERM little := (15, 1) (30, 0) ;
+    TERM middle := (20, 0) (35, 1) (45, 1) (65,0);
+   	TERM much := (55, 0) (75, 1);
 END_FUZZIFY
 
-DEFUZZIFY priorytet
-	TERM niski := (0,0) (20,1) (40,0);
-	TERM sredni := (30,0) (50,1) (60,0);
-	TERM wysoki := (50,0) (70,1) (90,0);
-	TERM bardzo_wysoki := (80,0) (95,1) (100,1);
+DEFUZZIFY fertilizationPriority
+	TERM low := (0,0) (20,1) (40,0);
+	TERM middle := (30,0) (50,1) (60,0);
+	TERM high := (50,0) (70,1) (90,0);
+	TERM very_high := (80,0) (95,1) (100,1);
 	
 	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
 	DEFAULT := 0;		
+END_DEFUZZIFY
+
+DEFUZZIFY cultivationPriority
+	TERM low := (0,0) (20,1) (40,0);
+	TERM middle := (30,0) (50,1) (60,0);
+	TERM high := (50,0) (70,1) (90,0);
+	TERM very_high := (80,0) (95,1) (100,1);
+
+	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY harvestPriority
+	TERM low := (0,0) (20,1) (40,0);
+	TERM middle := (30,0) (50,1) (60,0);
+	TERM high := (50,0) (70,1) (90,0);
+	TERM very_high := (80,0) (95,1) (100,1);
+
+	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
+	DEFAULT := 0;
 END_DEFUZZIFY
 
 RULEBLOCK No1
@@ -43,13 +65,16 @@ RULEBLOCK No1
 	ACT : MIN;			// Uzycie  'min' jako metody aktywacji
 	ACCU : MAX;			// Metoda agregacji - 'max'
 
-	RULE 1 : IF wilgotnosc IS mala AND temperatura IS wysoka AND jakosc IS slaba THEN priorytet IS bardzo_wysoki;
-	RULE 2 : IF wilgotnosc IS mala OR temperatura IS wysoka OR jakosc IS slaba THEN priorytet IS wysoki;
-	RULE 3 : IF wilgotnosc IS srednia OR temperatura IS srednia OR jakosc IS srednia THEN priorytet IS sredni;
-	RULE 4 : IF wilgotnosc IS duza AND temperatura IS srednia AND jakosc IS dobra THEN priorytet IS niski;
-	RULE 5 : IF wilgotnosc IS srednia AND temperatura IS niska OR jakosc IS slaba THEN priorytet IS sredni;
+	RULE 1 : IF weeds IS much THEN cultivationPriority IS high;
+	RULE 2 : IF weeds IS little THEN cultivationPriority IS low;
+	RULE 3 : IF weeds IS middle THEN cultivationPriority IS middle;
+	RULE 4 : IF minerals IS little THEN fertilizationPriority IS high;
+	RULE 5 : IF minerals IS middle THEN fertilizationPriority IS middle;
+	RULE 6 : IF minerals IS much THEN fertilizationPriority IS low;
+	RULE 7 : IF yields IS much THEN harvestPriority IS high;
+	RULE 8 : IF yields IS middle THEN harvestPriority IS middle;
+	RULE 9 : IF yields IS little THEN harvestPriority IS low;
 
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
-

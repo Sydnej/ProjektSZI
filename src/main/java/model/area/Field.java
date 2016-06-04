@@ -9,7 +9,6 @@ package model.area;
  * <li>plony</li>
  * <li>chwasty</li>
  * <li>minerały</li>
- * <li>nawodnienie</li>
  * </ul>
  * </p>
  */
@@ -19,9 +18,8 @@ public class Field {
     private FieldVertex[] corners;
 
     private double yields;
-    private double weed;
+    private double weeds;
     private double minerals;
-    private double hydration;
 
     public Field(int id) {
         this.id = id;
@@ -47,12 +45,12 @@ public class Field {
         this.yields = yields;
     }
 
-    public double getWeed() {
-        return weed;
+    public double getWeeds() {
+        return weeds;
     }
 
-    public void setWeed(double weed) {
-        this.weed = weed;
+    public void setWeeds(double weeds) {
+        this.weeds = weeds;
     }
 
     public double getMinerals() {
@@ -63,11 +61,4 @@ public class Field {
         this.minerals = minerals;
     }
 
-    public double getHydration() {
-        return hydration;
-    }
-
-    public void setHydration(double hydration) {
-        this.hydration = hydration;
-    }
 }

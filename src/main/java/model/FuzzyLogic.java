@@ -1,39 +1,58 @@
-package model; /**
- * Created by Karol on 24.05.2016.
- */
+package model;
 
+import model.area.Field;
 import net.sourceforge.jFuzzyLogic.FIS;
 
-import java.net.URL;
-
-
+/**
+ * Created by Karol on 24.05.2016.
+ */
 public class FuzzyLogic {
 
-    public int CountPriority(int w, int t, int j) {
-        // Load from 'FCL' file
-        URL resource = getClass().getResource("controller.fcl");
-        String fileName = resource.getFile();
+    private FIS fis;
 
-
-        int wilgotnosc = w; // do 100%
-        int temperatura = t;
-        int jakosc = j; // do 100%
-
-        FIS fis = FIS.load(fileName, true);
+    public FuzzyLogic() {
+        String fileName = getClass().getResource("controller.fcl").getFile();
+        fis = FIS.load(fileName, true);
         if (fis == null) {
-            System.err.println("Nie moge zaladowc pliku: '" + fileName + "'");
-            return 0;
+            throw new IllegalStateException("Nie moge zaladowc pliku: '" + fileName + "'");
         }
+    }
 
-        fis.setVariable("wilgotnosc", wilgotnosc);
-        fis.setVariable("temperatura", temperatura);
-        fis.setVariable("jakosc", jakosc);
+    /**
+     * Priorytet do nawożenia
+     *
+     * @param field
+     * @return priority
+     */
+    public double calcPriorityForFertilization(Field field) {
+        return calcPriority(field, "fertilizationPriority");
+    }
 
+    /**
+     * Priorytet do pielenia
+     *
+     * @param field
+     * @return priority
+     */
+    public double calcPriorityForCultivation(Field field) {
+        return calcPriority(field, "cultivationPriority");
+    }
+
+    /**
+     * Priorytet do zbierania plonów
+     *
+     * @param field
+     * @return priority
+     */
+    public double calcPriorityForHarvest(Field field) {
+        return calcPriority(field, "harvestPriority");
+    }
+
+    private double calcPriority(Field field, String outputParameterName) {
+        fis.setVariable("yields", field.getYields());
+        fis.setVariable("weeds", field.getWeeds());
+        fis.setVariable("minerals", field.getMinerals());
         fis.evaluate();
-
-        System.out.println("start...");
-        System.out.println("Priorytet:" + fis.getVariable("priorytet").getValue());
-        int pvalue = (int) fis.getVariable("priorytet").getValue();
-        return pvalue;
+        return fis.getVariable(outputParameterName).getValue();
     }
 }
