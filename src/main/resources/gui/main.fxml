@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.65"
-            fx:controller="gui.MainController">
+            fx:controller="gui.MainController" stylesheets="@main.css">
     <top>
         <MenuBar>
             <Menu text="Mapa">
@@ -20,7 +21,7 @@
         </AnchorPane>
     </center>
     <right>
-        <VBox>
+        <VBox spacing="10">
             <children>
                 <TableView fx:id="fieldsTable">
                     <columns>
@@ -34,7 +35,10 @@
                     </columnResizePolicy>
                 </TableView>
                 <Separator orientation="HORIZONTAL"/>
-                <VBox>
+                <VBox spacing="5">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
                     <Text text="Weather" style="-fx-font-size: 32"/>
                     <Label text="Temperature"/>
                     <Label fx:id="temperatureLabel"/>

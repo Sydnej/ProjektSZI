@@ -1,4 +1,4 @@
-FUNCTION_BLOCK controller	// Definicja bloku (moze byc wiecej blokow w pliku)
+FUNCTION_BLOCK field_controller	// Definicja bloku (moze byc wiecej blokow w pliku)
 
 VAR_INPUT				// Definiuje zmienne wejsciowe
 	yields : REAL;

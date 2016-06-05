@@ -26,11 +26,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
-
-import static gui.Direction.*;
+import java.util.logging.Logger;
 
 public class MainController implements Initializable {
 
+    private static final Logger LOGGER = Logger.getGlobal();
     @FXML
     private Label temperatureLabel;
     @FXML
@@ -55,12 +55,11 @@ public class MainController implements Initializable {
     private Image tractorRight;
     private Image tractorUp;
     private Image tractorDown;
+    private Image tractorImage;
     private GraphicsContext graphicsContext;
     //pozycja traktora:
     private double positionX = 718;
     private double positionY = 235;
-    //obrót traktora
-    private Direction tractorDirection;
     @FXML
     private BorderPane rootPane;
     @FXML
@@ -84,36 +83,35 @@ public class MainController implements Initializable {
         }
 
         if (currentlyActiveKeys.contains("LEFT")) {
-            tractorDirection = LEFT;
-            positionX = positionX - 1.0;
-            graphicsContext.drawImage(tractorLeft, positionX, positionY);
+            moveTractor(Direction.LEFT);
         } else if (currentlyActiveKeys.contains("RIGHT")) {
-            tractorDirection = RIGHT;
-            positionX = positionX + 1.0;
-            graphicsContext.drawImage(tractorRight, positionX, positionY);
+            moveTractor(Direction.RIGHT);
         } else if (currentlyActiveKeys.contains("DOWN")) {
-            tractorDirection = DOWN;
-            positionY = positionY + 1.0;
-            graphicsContext.drawImage(tractorDown, positionX, positionY);
+            moveTractor(Direction.DOWN);
         } else if (currentlyActiveKeys.contains("UP")) {
-            tractorDirection = UP;
-            positionY = positionY - 1.0;
-            graphicsContext.drawImage(tractorUp, positionX, positionY);
-        } else {
-            switch (tractorDirection) {
-                case LEFT:
-                    graphicsContext.drawImage(tractorLeft, positionX, positionY);
-                    break;
-                case RIGHT:
-                    graphicsContext.drawImage(tractorRight, positionX, positionY);
-                    break;
-                case UP:
-                    graphicsContext.drawImage(tractorUp, positionX, positionY);
-                    break;
-                case DOWN:
-                    graphicsContext.drawImage(tractorDown, positionX, positionY);
-                    break;
-            }
+            moveTractor(Direction.UP);
+        }
+        graphicsContext.drawImage(tractorImage, positionX, positionY);
+    }
+
+    private void moveTractor(Direction direction) {
+        switch (direction) {
+            case LEFT:
+                tractorImage = tractorLeft;
+                positionX = positionX - 1.0;
+                break;
+            case RIGHT:
+                tractorImage = tractorRight;
+                positionX = positionX + 1.0;
+                break;
+            case DOWN:
+                tractorImage = tractorDown;
+                positionY = positionY + 1.0;
+                break;
+            case UP:
+                tractorImage = tractorUp;
+                positionY = positionY - 1.0;
+                break;
         }
     }
 
@@ -126,6 +124,7 @@ public class MainController implements Initializable {
         startWeather();
         initWeatherPropertySheet();
         initFieldsTable();
+        startTractor();
 
 
         //pobieranie rozdzielczości ektanu
@@ -139,7 +138,22 @@ public class MainController implements Initializable {
         //ładowanie obiektów
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
-        tractorDirection = DOWN;
+    }
+
+    private void startTractor() {
+        Thread thread = new Thread(() -> {
+            while (true) {
+                moveTractor(Direction.LEFT);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    break;
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private void initWeatherPropertySheet() {
@@ -158,8 +172,11 @@ public class MainController implements Initializable {
     private void initFieldsTable() {
         fieldNoColumn.setCellValueFactory(param -> param.getValue().idProperty().asObject());
         yieldsColumn.setCellValueFactory(param -> param.getValue().yieldsProperty().asObject());
+        yieldsColumn.setCellFactory(new PropertyCellFactory(false));
         weedsColumn.setCellValueFactory(param -> param.getValue().weedsProperty().asObject());
+        weedsColumn.setCellFactory(new PropertyCellFactory(false));
         mineralsColumn.setCellValueFactory(param -> param.getValue().mineralsProperty().asObject());
+        mineralsColumn.setCellFactory(new PropertyCellFactory(true));
         Collection<Field> fields = tractor.getArea().getFields().values();
         fieldsTable.getItems().addAll(fields);
     }
@@ -182,6 +199,7 @@ public class MainController implements Initializable {
         tractorRight = new Image("img/tractor-right.png");
         tractorUp = new Image("img/tractor-up.png");
         tractorDown = new Image("img/tractor-down.png");
+        tractorImage = tractorDown;
     }
 
     public void setupListenersAndStartAnimation(Stage primaryStage) {
@@ -198,26 +216,22 @@ public class MainController implements Initializable {
 
     public void goToThePoint(double posX, double posY) {
         if (posX >= positionX) {
-            tractorDirection = Direction.RIGHT;
             while (posX > positionX) {
                 positionX = positionX + 0.5;
                 graphicsContext.drawImage(tractorRight, positionX, positionY);
             }
         } else {
-            tractorDirection = Direction.LEFT;
             while (posX < positionX) {
                 positionX = positionX - 0.5;
                 graphicsContext.drawImage(tractorLeft, positionX, positionY);
             }
         }
         if (posY >= positionY) {
-            tractorDirection = Direction.UP;
             while (posY > positionY) {
                 positionY = positionY + 0.5;
                 graphicsContext.drawImage(tractorUp, positionX, positionY);
             }
         } else {
-            tractorDirection = Direction.DOWN;
             while (posY < positionY) {
                 positionY = positionY - 0.5;
                 graphicsContext.drawImage(tractorDown, positionX, positionY);
@@ -226,7 +240,7 @@ public class MainController implements Initializable {
     }
 
     public void goViaPoints(List<GraphVertex> points) {
-        for(int i=0; i<points.size(); i++) {
+        for (int i = 0; i < points.size(); i++) {
             goToThePoint(points.get(i).getX(), points.get(i).getY());
         }
     }

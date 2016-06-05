@@ -3,15 +3,18 @@ package model;
 import model.area.Field;
 import net.sourceforge.jFuzzyLogic.FIS;
 
+import java.util.logging.Logger;
+
 /**
  * Created by Karol on 24.05.2016.
  */
 public class FuzzyLogic {
 
+    private static final Logger LOGGER = Logger.getGlobal();
     private FIS fis;
 
     public FuzzyLogic() {
-        String fileName = getClass().getResource("controller.fcl").getFile();
+        String fileName = getClass().getResource("field_controller.fcl").getFile();
         fis = FIS.load(fileName, true);
         if (fis == null) {
             throw new IllegalStateException("Nie moge zaladowc pliku: '" + fileName + "'");

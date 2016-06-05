@@ -19,13 +19,14 @@ class WeatherLoop implements Runnable {
 
     @Override
     public void run() {
-        while (isRunning()) {
+        while (true) {
             Platform.runLater(weather::update);
             area.getFields().values().forEach(this::updateProperties);
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
                 LOGGER.info("Interrupted");
+                break;
             }
         }
     }
@@ -40,9 +41,5 @@ class WeatherLoop implements Runnable {
                 field.setYields(field.getYields() + 1);
             }
         }
-    }
-
-    private boolean isRunning() {
-        return true;
     }
 }

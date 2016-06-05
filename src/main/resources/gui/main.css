@@ -1,4 +1,13 @@
-#map{
+#map {
     -fx-background-image: url("../img/map.png");
+}
 
+.table-row-cell:selected {
+    -fx-background-color: dodgerblue;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: black;
+    -fx-border-color: dodgerblue;
+    -fx-border-width: 3px 3px 3px 0px;
 }
