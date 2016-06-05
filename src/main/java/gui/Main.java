@@ -12,12 +12,16 @@ import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
+import DecisionTree.*;
 
 import java.io.IOException;
 
 public class Main extends Application {
 
     public static void main(String[] args) {
+
+        C45 TreeDecision = new C45();
+        TreeDecision.C45(args);
 
         GraphVertex city0 = new GraphVertex(0, 716.5, 231.5);
         TourManager.addVertex(city0);
