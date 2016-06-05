@@ -17,6 +17,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Tractor;
 import model.area.Field;
+import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
 
@@ -24,10 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 import static gui.Direction.*;
 
@@ -202,28 +200,35 @@ public class MainController implements Initializable {
         if (posX >= positionX) {
             tractorDirection = Direction.RIGHT;
             while (posX > positionX) {
-                positionX = positionX + 1.0;
+                positionX = positionX + 0.5;
                 graphicsContext.drawImage(tractorRight, positionX, positionY);
             }
         } else {
             tractorDirection = Direction.LEFT;
             while (posX < positionX) {
-                positionX = positionX - 1.0;
+                positionX = positionX - 0.5;
                 graphicsContext.drawImage(tractorLeft, positionX, positionY);
             }
         }
         if (posY >= positionY) {
             tractorDirection = Direction.UP;
             while (posY > positionY) {
-                positionY = positionY + 1.0;
+                positionY = positionY + 0.5;
                 graphicsContext.drawImage(tractorUp, positionX, positionY);
             }
         } else {
             tractorDirection = Direction.DOWN;
             while (posY < positionY) {
-                positionY = positionY - 1.0;
+                positionY = positionY - 0.5;
                 graphicsContext.drawImage(tractorDown, positionX, positionY);
             }
         }
     }
+
+    public void goViaPoints(List<GraphVertex> points) {
+        for(int i=0; i<points.size(); i++) {
+            goToThePoint(points.get(i).getX(), points.get(i).getY());
+        }
+    }
+
 }
