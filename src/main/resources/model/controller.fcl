@@ -31,30 +31,28 @@ FUZZIFY weeds
 END_FUZZIFY
 
 DEFUZZIFY fertilizationPriority
-	TERM low := (0,0) (20,1) (40,0);
+	TERM low := (0,1) (20,1) (40,0);
 	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (90,0);
-	TERM very_high := (80,0) (95,1) (100,1);
+	TERM high := (50,0) (70,1) (100,1);
+
 	
 	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
 	DEFAULT := 0;		
 END_DEFUZZIFY
 
 DEFUZZIFY cultivationPriority
-	TERM low := (0,0) (20,1) (40,0);
+	TERM low := (0,1) (20,1) (40,0);
 	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (90,0);
-	TERM very_high := (80,0) (95,1) (100,1);
+	TERM high := (50,0) (70,1) (100,1);
 
 	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
 	DEFAULT := 0;
 END_DEFUZZIFY
 
 DEFUZZIFY harvestPriority
-	TERM low := (0,0) (20,1) (40,0);
+	TERM low := (0,1) (20,1) (40,0);
 	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (90,0);
-	TERM very_high := (80,0) (95,1) (100,1);
+	TERM high := (50,0) (70,1) (100,1);
 
 	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
 	DEFAULT := 0;
