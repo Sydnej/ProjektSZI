@@ -234,6 +234,7 @@ public class MainController implements Initializable {
     }
 
     private void goToThePoint(double posX, double posY) {
+        final int ms = 5;
         if (posX >= positionX) {
             while (posX > positionX) {
                 moveTractor(Direction.RIGHT);
@@ -254,7 +255,6 @@ public class MainController implements Initializable {
             while (posY < positionY) {
                 moveTractor(Direction.UP);
                 slowTractor();
-
             }
         }
     }
