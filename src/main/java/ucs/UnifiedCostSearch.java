@@ -5,11 +5,25 @@ import model.area.Field;
 import model.area.GraphVertex;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
 public class UnifiedCostSearch {
+
+    public static LinkedList<GraphVertex> buildPath(State state) {
+        LinkedList<GraphVertex> path = new LinkedList<>();
+        addToPath(path, state);
+        return path;
+    }
+
+    private static void addToPath(LinkedList<GraphVertex> path, State state) {
+        path.addFirst(state.getGraphVertex());
+        if (state.hasParent()) {
+            addToPath(path, state.getParent());
+        }
+    }
 
     /**
      * @param area

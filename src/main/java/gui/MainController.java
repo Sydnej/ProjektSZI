@@ -13,14 +13,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.GeneticAlg.TourManager;
+import model.FuzzyLogic;
 import model.Tractor;
 import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
+import ucs.State;
+import ucs.UnifiedCostSearch;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,8 +29,6 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
-
-
 
 public class MainController implements Initializable {
 
@@ -81,44 +80,42 @@ public class MainController implements Initializable {
         graphicsContext.clearRect(0, 0, width, height);
         graphicsContext.drawImage(map, 0, 0);
 
-        if (currentlyActiveKeys.contains("ESCAPE")) {
-            stage.close();
-        }
-
-        if (currentlyActiveKeys.contains("LEFT")) {
-            moveTractor(Direction.LEFT);
-        } else if (currentlyActiveKeys.contains("RIGHT")) {
-            moveTractor(Direction.RIGHT);
-        } else if (currentlyActiveKeys.contains("DOWN")) {
-            moveTractor(Direction.DOWN);
-        } else if (currentlyActiveKeys.contains("UP")) {
-            moveTractor(Direction.UP);
-        }
+//        if (currentlyActiveKeys.contains("ESCAPE")) {
+//            stage.close();
+//        }
+//
+//        if (currentlyActiveKeys.contains("LEFT")) {
+//            moveTractor(Direction.LEFT);
+//        } else if (currentlyActiveKeys.contains("RIGHT")) {
+//            moveTractor(Direction.RIGHT);
+//        } else if (currentlyActiveKeys.contains("DOWN")) {
+//            moveTractor(Direction.DOWN);
+//        } else if (currentlyActiveKeys.contains("UP")) {
+//            moveTractor(Direction.UP);
+//        }
         graphicsContext.drawImage(tractorImage, positionX, positionY);
-
     }
 
     private void moveTractor(Direction direction) {
-        waitUntilRunThreadFinishes(20);
-            switch (direction) {
-                case LEFT:
-                    tractorImage = tractorLeft;
-                    positionX = positionX - 1.0;
-                    break;
-                case RIGHT:
-                    tractorImage = tractorRight;
-                    positionX = positionX + 1.0;
-                    break;
-                case DOWN:
-                    tractorImage = tractorDown;
-                    positionY = positionY + 1.0;
-                    break;
-                case UP:
-                    tractorImage = tractorUp;
-                    positionY = positionY - 1.0;
-                    break;
-            }
-
+        switch (direction) {
+            case LEFT:
+                tractorImage = tractorLeft;
+                positionX = positionX - 0.5;
+                break;
+            case RIGHT:
+                tractorImage = tractorRight;
+                positionX = positionX + 0.5;
+                break;
+            case DOWN:
+                tractorImage = tractorDown;
+                positionY = positionY - 0.5;
+                break;
+            case UP:
+                tractorImage = tractorUp;
+                positionY = positionY + 0.5;
+                break;
+        }
+        LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
     }
 
     @Override
@@ -126,30 +123,20 @@ public class MainController implements Initializable {
         tractor = new Tractor();
         // wczytanie domyślnej mapy
         tractor.getArea().loadData(getClass().getResourceAsStream("/xml/map.xml"));
+        tractor.setCurrentPosition(tractor.getArea().getGraphVertices().get(0));
+
+        positionX = tractor.getCurrentPosition().getX();
+        positionY = tractor.getCurrentPosition().getY();
 
         startWeather();
         initWeatherPropertySheet();
         initFieldsTable();
-        //startTractor();
-
-        List<GraphVertex> tractorPath  = new ArrayList<GraphVertex>();
-
-        System.out.println(tractor.getArea().getGraphVertices().size() + "<------------------");
-        for (int i = 0; i < tractor.getArea().getGraphVertices().size(); i++){
-
-            tractorPath.add(tractor.getArea().getGraphVertices().get(i));
-
-        }
-
-        startTractor(tractorPath);
-
-
-
+        startTractor();
 
         //pobieranie rozdzielczości ektanu
-        height = (int) Screen.getPrimary().getVisualBounds().getHeight();
-        width = (int) Screen.getPrimary().getVisualBounds().getWidth();
-        System.out.print("height: " + height + " width: " + width);
+//        height = (int) Screen.getPrimary().getVisualBounds().getHeight();
+//        width = (int) Screen.getPrimary().getVisualBounds().getWidth();
+//        System.out.print("height: " + height + " width: " + width);
 
 //        canvas.setWidth(width);
 //        canvas.setHeight(height);
@@ -158,26 +145,29 @@ public class MainController implements Initializable {
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
 
-        //goViaPoints(tractorPath);
     }
 
-    private void startTractor(List<GraphVertex> tractorPath) {
-
-
+    private void startTractor() {
         Thread thread = new Thread(() -> {
-            for (int i = 0; i < tractorPath.size(); i++) {
-                System.out.println("Pozycja, X: " + tractorPath.get(i).getX() + " Y:" + tractorPath.get(i).getY());
-                goToThePoint(tractorPath.get(i).getX(), tractorPath.get(i).getY());
-                //moveTractor(Direction.LEFT);
-                goViaPoints(tractorPath);
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
-                    break;
+            FuzzyLogic flogic = new FuzzyLogic();
+            while (true) {
+                Map<Integer, Field> fields = tractor.getArea().getFields();
+                Map<Integer, GraphVertex> graphVertices = tractor.getArea().getGraphVertices();
+                Optional<Field> max = fields.values().stream().max((o1, o2) -> (int) (flogic.calcPriorityForHarvest
+                        (o1) - flogic.calcPriorityForHarvest(o2)));
+                if (max.isPresent()) {
+                    Field field = max.get();
+                    GraphVertex goalVertex = graphVertices.get(field.getId());
+                    State result = new UnifiedCostSearch().calc(tractor.getArea(), tractor.getCurrentPosition(),
+                            goalVertex, null);
+                    LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
+                    goViaPoints(path);
+                    tractor.setCurrentPosition(goalVertex);
+                    field.setYields(0);
                 }
             }
         });
+        thread.setName("Tractor thread");
         thread.setDaemon(true);
         thread.start();
     }
@@ -191,6 +181,7 @@ public class MainController implements Initializable {
     private void startWeather() {
         weather.setSeason(Season.SPRING);
         Thread thread = new Thread(new WeatherLoop(tractor.getArea(), weather));
+        thread.setName("Weather thread");
         thread.setDaemon(true);
         thread.start();
     }
@@ -240,48 +231,54 @@ public class MainController implements Initializable {
         }.start();
     }
 
-    public void goToThePoint(double posX, double posY) {
+    private void goToThePoint(double posX, double posY) {
         if (posX >= positionX) {
             while (posX > positionX) {
-                //positionX = positionX + 0.5;
-                //graphicsContext.drawImage(tractorRight, positionX, positionY);
                 moveTractor(Direction.RIGHT);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    break;
+                }
             }
         } else {
             while (posX < positionX) {
-               // positionX = positionX - 0.5;
-                //graphicsContext.drawImage(tractorLeft, positionX, positionY);
                 moveTractor(Direction.LEFT);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    break;
+                }
             }
         }
         if (posY >= positionY) {
             while (posY > positionY) {
-                //positionY = positionY + 0.5;
-                //graphicsContext.drawImage(tractorUp, positionX, positionY);
-                moveTractor(Direction.DOWN);
+                moveTractor(Direction.UP);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    break;
+                }
             }
         } else {
             while (posY < positionY) {
-                //positionY = positionY - 0.5;
-                //graphicsContext.drawImage(tractorDown, positionX, positionY);
-                moveTractor(Direction.UP);
+                moveTractor(Direction.DOWN);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    break;
+                }
             }
         }
     }
 
     public void goViaPoints(List<GraphVertex> points) {
-        for (int i = 0; i < points.size(); i++) {
-            System.out.println("Pozycja, X: " + points.get(i).getX() + " Y:" + points.get(i).getY());
-            goToThePoint(points.get(i).getX(), points.get(i).getY());
+        for (GraphVertex point : points) {
+            goToThePoint(point.getX(), point.getY());
         }
     }
-
-    private void waitUntilRunThreadFinishes(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

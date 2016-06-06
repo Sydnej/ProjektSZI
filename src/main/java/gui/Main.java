@@ -1,21 +1,22 @@
 package gui;
 
+import DecisionTree.C45;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.FuzzyLogic;
 import model.GeneticAlg.TourManager;
 import model.area.Area;
 import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
-import DecisionTree.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Main extends Application {
@@ -25,67 +26,19 @@ public class Main extends Application {
         C45 TreeDecision = new C45();
         //TreeDecision.C45(args);
         //System.out.println(TreeDecision.MakeDecision("overcast","hot","normal","weak"));
-        List<GraphVertex> tractorPath  = new ArrayList<GraphVertex>();
+        List<GraphVertex> tractorPath = new ArrayList<GraphVertex>();
 
-        GraphVertex city0 = new GraphVertex(0, 716.5, 231.5);
-        TourManager.addVertex(city0);
-        GraphVertex city1 = new GraphVertex(1, 102, 185.5);
-        TourManager.addVertex(city1);
-        GraphVertex city2 = new GraphVertex(2, 220.5, 234);
-        TourManager.addVertex(city2);
-        GraphVertex city3 = new GraphVertex(3, 139.5, 380);
-        TourManager.addVertex(city3);
-        GraphVertex city4 = new GraphVertex(4, 26.5, 544);
-        TourManager.addVertex(city4);
-        GraphVertex city5 = new GraphVertex(5, 85.5, 664);
-        TourManager.addVertex(city5);
-        GraphVertex city6 = new GraphVertex(6, 290.5, 139);
-        TourManager.addVertex(city6);
-        GraphVertex city7 = new GraphVertex(7, 393, 336.5);
-        TourManager.addVertex(city7);
-        GraphVertex city8 = new GraphVertex(8, 333.5, 663);
-        TourManager.addVertex(city8);
-        GraphVertex city9 = new GraphVertex(9, 514.5, 133);
-        TourManager.addVertex(city9);
-        GraphVertex city10 = new GraphVertex(10, 514.5, 133);
-        TourManager.addVertex(city10);
-        GraphVertex city11 = new GraphVertex(11, 514, 271.5);
-        TourManager.addVertex(city11);
-        GraphVertex city12 = new GraphVertex(12, 546, 414.5);
-        TourManager.addVertex(city12);
-        GraphVertex city13 = new GraphVertex(13, 543.5, 522);
-        TourManager.addVertex(city13);
-        GraphVertex city14 = new GraphVertex(14, 720.5, 113);
-        TourManager.addVertex(city14);
-        GraphVertex city15 = new GraphVertex(15, 664.5, 330);
-        TourManager.addVertex(city15);
-        GraphVertex city16 = new GraphVertex(16, 673.5, 521);
-        TourManager.addVertex(city16);
-        GraphVertex city17 = new GraphVertex(17, 860, 183.5);
-        TourManager.addVertex(city17);
-        GraphVertex city18 = new GraphVertex(18, 863, 367.5);
-        TourManager.addVertex(city18);
-        GraphVertex city19 = new GraphVertex(19, 842.5, 517);
-        TourManager.addVertex(city19);
+        Area area = new Area();
+        area.loadData(Main.class.getResourceAsStream("../xml/map.xml"));
+        Collection<GraphVertex> values = area.getGraphVertices().values();
+        new ArrayList<>(values).subList(0, 19).forEach(TourManager::addVertex);
 
 
         launch(args);
-
-        FuzzyLogic flogic = new FuzzyLogic();
-        Field field = new Field(0);
-        field.setWeeds(30);
-        field.setMinerals(80);
-        field.setYields(80);
-        System.out.println("nawożenie: " + flogic.calcPriorityForFertilization(field));
-        System.out.println("pielenie: " + flogic.calcPriorityForCultivation(field));
-        System.out.println("żniwa: " + flogic.calcPriorityForHarvest(field));
-
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
-
         Weather weather = new Weather();
         weather.setSeason(Season.WINTER);
         System.out.println("humidity:   " + weather.getHumidity() + "%");
@@ -123,13 +76,12 @@ public class Main extends Application {
             Pane page = loader.load();
             primaryStage.setTitle("Traktor");
             primaryStage.setFullScreen(true);
+            primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             Scene primaryScene = new Scene(page);
             primaryStage.setScene(primaryScene);
             MainController controller = loader.getController();
             controller.setupListenersAndStartAnimation(primaryStage);
-            //controller.goViaPoints(tractorPath);
             primaryStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
