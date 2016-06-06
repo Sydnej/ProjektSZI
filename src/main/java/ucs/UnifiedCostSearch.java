@@ -34,7 +34,7 @@ public class UnifiedCostSearch {
 
         while (!open.isEmpty()) {
             Optional<State> result = open.stream().sorted(Comparator.comparingDouble(UnifiedCostSearch::calcCost))
-                    .filter(vertex -> !closed.contains(vertex)).findFirst();
+                    .filter(st -> !closed.contains(st)).findFirst();
             if (result.isPresent()) {
                 State state = result.get();
                 open.remove(state);

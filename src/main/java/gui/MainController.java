@@ -140,7 +140,7 @@ public class MainController implements Initializable {
             public void handle(MouseEvent event) {
                 C45 TreeDecision = new C45();
                 TreeDecision.C45();
-                System.out.println(TreeDecision.MakeDecision("overcast","hot","normal","weak"));
+                System.out.println(TreeDecision.MakeDecision("overcast", "hot", "normal", "weak"));
             }
         });
 
