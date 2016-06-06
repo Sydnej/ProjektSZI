@@ -46,11 +46,6 @@
                     </columnResizePolicy>
                 </TableView>
                 <Separator orientation="HORIZONTAL" />
-            <Label fx:id="day" text="Day">
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-            </Label>
                 <VBox spacing="5">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
@@ -63,7 +58,7 @@
                     <Label text="Rain" />
                     <Label fx:id="rainLabel" />
                 </VBox>
-            <HBox prefHeight="31.0" prefWidth="322.0">
+            <HBox prefHeight="22.0" prefWidth="402.0">
                <children>
                   <Label prefHeight="29.0" prefWidth="172.0" text="Tractor speed">
                      <HBox.margin>
@@ -75,12 +70,27 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="speedButton" prefHeight="29.0" prefWidth="125.0" text="Set speed">
+                  <Button fx:id="speedButton" prefHeight="29.0" prefWidth="125.0" text="Set tractor speed">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <HBox.margin>
                         <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="23.0" prefWidth="402.0">
+               <children>
+                  <Label prefHeight="25.0" prefWidth="169.0" text="Day speed">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="daySpeed" prefHeight="25.0" prefWidth="81.0" promptText="speed" />
+                  <Button fx:id="daySpeedButton" prefHeight="25.0" prefWidth="126.0" text="Set day speed">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Button>
                </children>
