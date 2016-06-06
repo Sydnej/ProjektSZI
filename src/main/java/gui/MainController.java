@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.GeneticAlg.TourManager;
 import model.Tractor;
 import model.area.Field;
 import model.area.GraphVertex;
@@ -27,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
+
+
 
 public class MainController implements Initializable {
 
@@ -92,27 +95,30 @@ public class MainController implements Initializable {
             moveTractor(Direction.UP);
         }
         graphicsContext.drawImage(tractorImage, positionX, positionY);
+
     }
 
     private void moveTractor(Direction direction) {
-        switch (direction) {
-            case LEFT:
-                tractorImage = tractorLeft;
-                positionX = positionX - 1.0;
-                break;
-            case RIGHT:
-                tractorImage = tractorRight;
-                positionX = positionX + 1.0;
-                break;
-            case DOWN:
-                tractorImage = tractorDown;
-                positionY = positionY + 1.0;
-                break;
-            case UP:
-                tractorImage = tractorUp;
-                positionY = positionY - 1.0;
-                break;
-        }
+        waitUntilRunThreadFinishes(20);
+            switch (direction) {
+                case LEFT:
+                    tractorImage = tractorLeft;
+                    positionX = positionX - 1.0;
+                    break;
+                case RIGHT:
+                    tractorImage = tractorRight;
+                    positionX = positionX + 1.0;
+                    break;
+                case DOWN:
+                    tractorImage = tractorDown;
+                    positionY = positionY + 1.0;
+                    break;
+                case UP:
+                    tractorImage = tractorUp;
+                    positionY = positionY - 1.0;
+                    break;
+            }
+
     }
 
     @Override
@@ -124,7 +130,20 @@ public class MainController implements Initializable {
         startWeather();
         initWeatherPropertySheet();
         initFieldsTable();
-        startTractor();
+        //startTractor();
+
+        List<GraphVertex> tractorPath  = new ArrayList<GraphVertex>();
+
+        System.out.println(tractor.getArea().getGraphVertices().size() + "<------------------");
+        for (int i = 0; i < tractor.getArea().getGraphVertices().size(); i++){
+
+            tractorPath.add(tractor.getArea().getGraphVertices().get(i));
+
+        }
+
+        startTractor(tractorPath);
+
+
 
 
         //pobieranie rozdzielczości ektanu
@@ -138,12 +157,19 @@ public class MainController implements Initializable {
         //ładowanie obiektów
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
+
+        //goViaPoints(tractorPath);
     }
 
-    private void startTractor() {
+    private void startTractor(List<GraphVertex> tractorPath) {
+
+
         Thread thread = new Thread(() -> {
-            while (true) {
-                moveTractor(Direction.LEFT);
+            for (int i = 0; i < tractorPath.size(); i++) {
+                System.out.println("Pozycja, X: " + tractorPath.get(i).getX() + " Y:" + tractorPath.get(i).getY());
+                goToThePoint(tractorPath.get(i).getX(), tractorPath.get(i).getY());
+                //moveTractor(Direction.LEFT);
+                goViaPoints(tractorPath);
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
@@ -217,31 +243,44 @@ public class MainController implements Initializable {
     public void goToThePoint(double posX, double posY) {
         if (posX >= positionX) {
             while (posX > positionX) {
-                positionX = positionX + 0.5;
-                graphicsContext.drawImage(tractorRight, positionX, positionY);
+                //positionX = positionX + 0.5;
+                //graphicsContext.drawImage(tractorRight, positionX, positionY);
+                moveTractor(Direction.RIGHT);
             }
         } else {
             while (posX < positionX) {
-                positionX = positionX - 0.5;
-                graphicsContext.drawImage(tractorLeft, positionX, positionY);
+               // positionX = positionX - 0.5;
+                //graphicsContext.drawImage(tractorLeft, positionX, positionY);
+                moveTractor(Direction.LEFT);
             }
         }
         if (posY >= positionY) {
             while (posY > positionY) {
-                positionY = positionY + 0.5;
-                graphicsContext.drawImage(tractorUp, positionX, positionY);
+                //positionY = positionY + 0.5;
+                //graphicsContext.drawImage(tractorUp, positionX, positionY);
+                moveTractor(Direction.DOWN);
             }
         } else {
             while (posY < positionY) {
-                positionY = positionY - 0.5;
-                graphicsContext.drawImage(tractorDown, positionX, positionY);
+                //positionY = positionY - 0.5;
+                //graphicsContext.drawImage(tractorDown, positionX, positionY);
+                moveTractor(Direction.UP);
             }
         }
     }
 
     public void goViaPoints(List<GraphVertex> points) {
         for (int i = 0; i < points.size(); i++) {
+            System.out.println("Pozycja, X: " + points.get(i).getX() + " Y:" + points.get(i).getY());
             goToThePoint(points.get(i).getX(), points.get(i).getY());
+        }
+    }
+
+    private void waitUntilRunThreadFinishes(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

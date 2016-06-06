@@ -15,13 +15,17 @@ import model.weather.Weather;
 import DecisionTree.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
     public static void main(String[] args) {
 
         C45 TreeDecision = new C45();
-        TreeDecision.C45(args);
+        //TreeDecision.C45(args);
+        //System.out.println(TreeDecision.MakeDecision("overcast","hot","normal","weak"));
+        List<GraphVertex> tractorPath  = new ArrayList<GraphVertex>();
 
         GraphVertex city0 = new GraphVertex(0, 716.5, 231.5);
         TourManager.addVertex(city0);
@@ -64,6 +68,7 @@ public class Main extends Application {
         GraphVertex city19 = new GraphVertex(19, 842.5, 517);
         TourManager.addVertex(city19);
 
+
         launch(args);
 
         FuzzyLogic flogic = new FuzzyLogic();
@@ -79,6 +84,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
+
         Weather weather = new Weather();
         weather.setSeason(Season.WINTER);
         System.out.println("humidity:   " + weather.getHumidity() + "%");
@@ -120,7 +127,9 @@ public class Main extends Application {
             primaryStage.setScene(primaryScene);
             MainController controller = loader.getController();
             controller.setupListenersAndStartAnimation(primaryStage);
+            //controller.goViaPoints(tractorPath);
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

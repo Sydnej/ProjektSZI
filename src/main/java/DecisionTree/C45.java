@@ -16,7 +16,8 @@ public class C45 {
 	private static List<Element> trainingSet = new ArrayList<Element>();
 	private static List<Element> testSet  = new ArrayList<Element>();
 	//private static newElement elementSet = new newElement();
-	
+	private DecisionTree decisionTree;
+
 	public  void C45(String[] args) {
 		
 		// Okno
@@ -40,7 +41,7 @@ public class C45 {
 			gui.setTestSet(testSet);
 			
 			// Drzewo decyzyjne przy pomocy zestawu szkoleniowy
-			DecisionTree decisionTree = new DecisionTree(trainingSet, 
+			 decisionTree = new DecisionTree(trainingSet,
 														filePaser.getAttributes(), 
 														filePaser.getNumberOfOutput());
 			
@@ -51,10 +52,10 @@ public class C45 {
 			accuracy = decisionTree.calculateAccuracy(testSet);
 			//System.out.println(decisionTree.newDecision(testSet));
 
-			newElement elementSet = new newElement("overcast","hot","normal","weak");
+			/*newElement elementSet = new newElement("overcast","hot","normal","weak");
 			String result = decisionTree.newDecision(elementSet);
 			System.out.println("Wynik nowego elementu: " + result);
-
+*/
 
 		} while (accuracy < MINACCURACY);
 		
@@ -63,6 +64,11 @@ public class C45 {
 
 	}
 	
+	public String MakeDecision(String Pogoda,String Temp, String Wilg, String Wiatr ){
+		newElement elementSet = new newElement(Pogoda,Temp,Wilg,Wiatr);
+		String result = decisionTree.newDecision(elementSet);
+		return result;
+	}
 
 	private static void assignElements(List<Element> elementList) {
 
