@@ -76,4 +76,19 @@ public class UnifiedCostSearchTest {
         assertEquals(v0, verticesSorted.getFirst());
         assertEquals(v5, verticesSorted.getLast());
     }
+
+    @Test
+    public void shouldGoThroughV1() {
+        v0.addLinkedVertice(v1.getId());
+        v0.addLinkedVertice(v5.getId());
+        v1.addLinkedVertice(v2.getId());
+        v5.addLinkedVertice(v2.getId());
+
+        State result = UnifiedCostSearch.calc(vertices, v0, v2);
+        LinkedList<GraphVertex> verticesSorted = UnifiedCostSearch.buildPath(result);
+        assertEquals(3, verticesSorted.size());
+        assertEquals(v0, verticesSorted.get(0));
+        assertEquals(v1, verticesSorted.get(1));
+        assertEquals(v2, verticesSorted.get(2));
+    }
 }
