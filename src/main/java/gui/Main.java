@@ -22,10 +22,6 @@ import java.util.List;
 public class Main extends Application {
 
     public static void main(String[] args) {
-
-        C45 TreeDecision = new C45();
-        //TreeDecision.C45(args);
-        //System.out.println(TreeDecision.MakeDecision("overcast","hot","normal","weak"));
         List<GraphVertex> tractorPath = new ArrayList<GraphVertex>();
 
         Area area = new Area();

@@ -2,22 +2,32 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.65"
-            fx:controller="gui.MainController" stylesheets="@main.css">
+
+<BorderPane fx:id="rootPane" stylesheets="@main.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
     <top>
         <MenuBar>
             <Menu text="Mapa">
-                <MenuItem onAction="#handleSelectMap" text="Wybierz mapę"/>
+                <MenuItem onAction="#handleSelectMap" text="Wybierz mapę" />
             </Menu>
         </MenuBar>
     </top>
     <center>
         <AnchorPane>
-            <Canvas fx:id="canvas" height="768.0" width="1000.0" AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            <Canvas fx:id="canvas" height="768.0" width="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </AnchorPane>
     </center>
     <right>
@@ -25,28 +35,55 @@
             <children>
                 <TableView fx:id="fieldsTable">
                     <columns>
-                        <TableColumn fx:id="fieldNoColumn" text="Field no"/>
-                        <TableColumn fx:id="yieldsColumn" text="Yields"/>
-                        <TableColumn fx:id="weedsColumn" text="Weeds"/>
-                        <TableColumn fx:id="mineralsColumn" text="Minerals"/>
+                        <TableColumn fx:id="fieldNoColumn" text="Field no" />
+                        <TableColumn fx:id="yieldsColumn" text="Yields" />
+                        <TableColumn fx:id="weedsColumn" text="Weeds" />
+                        <TableColumn fx:id="mineralsColumn" text="Minerals" />
                     </columns>
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-                <Separator orientation="HORIZONTAL"/>
+                <Separator orientation="HORIZONTAL" />
                 <VBox spacing="5">
                     <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
+                        <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <Text text="Weather" style="-fx-font-size: 32"/>
-                    <Label text="Temperature"/>
-                    <Label fx:id="temperatureLabel"/>
-                    <Label text="Humidity"/>
-                    <Label fx:id="humidityLabel"/>
-                    <Label text="Rain"/>
-                    <Label fx:id="rainLabel"/>
+                    <Text style="-fx-font-size: 32" text="Weather" />
+                    <Label text="Temperature" />
+                    <Label fx:id="temperatureLabel" />
+                    <Label text="Humidity" />
+                    <Label fx:id="humidityLabel" />
+                    <Label text="Rain" />
+                    <Label fx:id="rainLabel" />
                 </VBox>
+            <HBox prefHeight="31.0" prefWidth="322.0">
+               <children>
+                  <Label prefHeight="29.0" prefWidth="100.0" text="Tractor speed">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="speed" prefHeight="29.0" prefWidth="83.0" promptText="speed">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="speedButton" prefHeight="29.0" prefWidth="125.0" text="Set speed">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Button fx:id="decisionTreeButton" text="Show decision tree">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Button>
             </children>
         </VBox>
     </right>

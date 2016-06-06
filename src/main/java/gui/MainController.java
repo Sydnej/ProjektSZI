@@ -1,16 +1,17 @@
 package gui;
 
+import DecisionTree.C45;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -49,6 +50,12 @@ public class MainController implements Initializable {
     private TableColumn<Field, Integer> weedsColumn;
     @FXML
     private TableColumn<Field, Integer> mineralsColumn;
+    @FXML
+    private TextField speed;
+    @FXML
+    private Button speedButton;
+    @FXML
+    private Button decisionTreeButton;
     private Set<String> currentlyActiveKeys = new HashSet<>();
     private int height;
     private int width;
@@ -69,15 +76,15 @@ public class MainController implements Initializable {
     private Stage stage;
     private Tractor tractor;
     private Weather weather = new Weather();
-    private int speed = 10; //ms
+    private int tractorSpeed = 10; //ms
 
     public void setSpeedTractor(int newSpeed) {
-        speed = newSpeed;
+        tractorSpeed = newSpeed;
     }
 
     private void slowTractor() {
         try {
-            Thread.sleep(speed);
+            Thread.sleep(tractorSpeed);
         } catch (InterruptedException e) {
             LOGGER.info("Interrupted");
         }
@@ -127,6 +134,22 @@ public class MainController implements Initializable {
 
         positionX = tractor.getCurrentPosition().getX();
         positionY = tractor.getCurrentPosition().getY();
+
+        decisionTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                C45 TreeDecision = new C45();
+                TreeDecision.C45();
+                System.out.println(TreeDecision.MakeDecision("overcast","hot","normal","weak"));
+            }
+        });
+
+        speedButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setSpeedTractor(Integer.parseInt(speed.getText()));
+            }
+        });
 
         startWeather();
         initWeatherPropertySheet();

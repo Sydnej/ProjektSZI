@@ -18,7 +18,7 @@ public class C45 {
 	//private static newElement elementSet = new newElement();
 	private DecisionTree decisionTree;
 
-	public  void C45(String[] args) {
+	public  void C45() {
 		
 		// Okno
 		Gui gui = new Gui();
