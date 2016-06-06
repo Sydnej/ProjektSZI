@@ -1,0 +1,24 @@
+@RELATION problem-complexity
+
+@ATTRIBUTE examples NUMERIC
+@ATTRIBUTE avgExampleSize NUMERIC
+@ATTRIBUTE components NUMERIC
+@ATTRIBUTE assignments NUMERIC
+@ATTRIBUTE scrambled {true,false}
+@ATTRIBUTE complexity {easy,medium,hard}
+
+	 
+
+@DATA
+34,6,11,8,false,medium
+12,21,7,17,false,medium
+14,11,11,17,true,hard
+13,16,9,14,false,hard
+16,35,7,17,false,hard
+20,9,7,10,false,hard
+24,5,8,6,false,medium
+9,14,13,4,false,easy
+18,7,17,7,true,hard
+18,7,12,10,false,easy
+10,16,9,11,false,hard
+211,3,17,13,true,easy
