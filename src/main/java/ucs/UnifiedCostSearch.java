@@ -41,7 +41,7 @@ public class UnifiedCostSearch {
         Set<State> closed = new HashSet<>();
 
         while (!open.isEmpty()) {
-            Optional<State> result = open.stream().sorted((o1, o2) -> calcCost(o2) - calcCost(o1)).filter
+            Optional<State> result = open.stream().sorted((o1, o2) -> calcCost(o1) - calcCost(o2)).filter
                     (vertex -> !closed.contains(vertex)).findFirst();
             if (result.isPresent()) {
                 State state = result.get();
@@ -63,9 +63,21 @@ public class UnifiedCostSearch {
 
     private int calcCost(State state) {
         if (state.hasParent()) {
-            return 1 + calcCost(state.getParent());
+            return distanceToParent(state) + calcCost(state.getParent());
         }
         return 0;
+    }
+
+    private int distanceToParent(State state) {
+        GraphVertex stateVertex = state.getGraphVertex();
+        GraphVertex parentVertex = state.getParent().getGraphVertex();
+        if (stateVertex.getX() == parentVertex.getX()) {
+            return (int) Math.abs(stateVertex.getY() - parentVertex.getY());
+        }
+        if (stateVertex.getY() == parentVertex.getY()) {
+            return (int) Math.abs(stateVertex.getX() - parentVertex.getX());
+        }
+        return Integer.MAX_VALUE;
     }
 
 }
