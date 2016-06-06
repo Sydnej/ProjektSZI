@@ -6,7 +6,6 @@ public class State {
     private final GraphVertex graphVertex;
 
     private State parent;
-    private int cost = 0;
 
     public State(GraphVertex graphVertex) {
         this.graphVertex = graphVertex;
@@ -42,10 +41,5 @@ public class State {
 
     public void setParent(State parent) {
         this.parent = parent;
-        cost = parent.getCost() + 1;
-    }
-
-    public int getCost() {
-        return cost;
     }
 }
