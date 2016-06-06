@@ -69,6 +69,20 @@ public class MainController implements Initializable {
     private Stage stage;
     private Tractor tractor;
     private Weather weather = new Weather();
+    private int speed = 10; //ms
+
+    public void setSpeedTractor(int newSpeed){
+        speed = newSpeed;
+    }
+
+    private void slowTractor() {
+        try {
+            Thread.sleep(speed);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void prepareActionHandlers(Scene scene) {
         scene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
@@ -235,43 +249,24 @@ public class MainController implements Initializable {
         if (posX >= positionX) {
             while (posX > positionX) {
                 moveTractor(Direction.RIGHT);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
-                    break;
-                }
+                slowTractor();
             }
         } else {
             while (posX < positionX) {
                 moveTractor(Direction.LEFT);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
-                    break;
-                }
+                slowTractor();
             }
         }
         if (posY >= positionY) {
             while (posY > positionY) {
                 moveTractor(Direction.UP);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
-                    break;
-                }
+                slowTractor();
             }
         } else {
             while (posY < positionY) {
                 moveTractor(Direction.DOWN);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
-                    break;
-                }
+                slowTractor();
+
             }
         }
     }
