@@ -1,0 +1,16 @@
+@RELATION problem-complexity
+
+@ATTRIBUTE yields NUMERIC
+@ATTRIBUTE weeds NUMERIC
+@ATTRIBUTE minerals NUMERIC
+@ATTRIBUTE priority {harvest,cultivation,fertilization}
+
+	 
+
+@DATA
+100,1,1,harvest
+1,100,1,cultivation
+1,1,1,fertilization
+60,50,50,harvest
+50,60,50,cultivation
+50,50,60,fertilization
