@@ -41,8 +41,6 @@ public class MainController implements Initializable {
     @FXML
     private Label rainLabel;
     @FXML
-    private Label day;
-    @FXML
     private TableView<Field> fieldsTable;
     @FXML
     private TableColumn<Field, Integer> fieldNoColumn;
@@ -58,6 +56,10 @@ public class MainController implements Initializable {
     private TextField speed;
     @FXML
     private Button speedButton;
+    @FXML
+    private TextField daySpeed;
+    @FXML
+    private Button daySpeedButton;
     @FXML
     private Button decisionTreeButton;
     private Set<String> currentlyActiveKeys = new HashSet<>();
@@ -81,6 +83,7 @@ public class MainController implements Initializable {
     private Tractor tractor;
     private Weather weather = new Weather();
     private int tractorSpeed = 10; //ms
+    private WeatherLoop weatherLoop;
 
     public void setSpeedTractor(int newSpeed) {
         tractorSpeed = newSpeed;
@@ -139,8 +142,6 @@ public class MainController implements Initializable {
         positionX = tractor.getCurrentPosition().getX();
         positionY = tractor.getCurrentPosition().getY();
 
-        day.setText("Day 1");
-
         decisionTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -161,6 +162,13 @@ public class MainController implements Initializable {
         initWeatherPropertySheet();
         initFieldsTable();
         startTractor();
+
+        daySpeedButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                weatherLoop.setDaySpeed(Integer.parseInt(daySpeed.getText()));
+            }
+        });
 
         //pobieranie rozdzielczości ektanu
 //        height = (int) Screen.getPrimary().getVisualBounds().getHeight();
@@ -211,7 +219,8 @@ public class MainController implements Initializable {
 
     private void startWeather() {
         weather.setSeason(Season.SPRING);
-        Thread thread = new Thread(new WeatherLoop(tractor.getArea(), weather));
+        weatherLoop = new WeatherLoop(tractor.getArea(), weather);
+        Thread thread = new Thread(weatherLoop);
         thread.setName("Weather thread");
         thread.setDaemon(true);
         thread.start();
