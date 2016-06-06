@@ -13,4 +13,7 @@
 1,1,1,fertilization
 60,50,50,harvest
 50,60,50,cultivation
-50,50,60,fertilization
+50,50,60,harvest
+50,50,50 cultivation
+90,90,90,harvest
+30,100,50 cultivation
