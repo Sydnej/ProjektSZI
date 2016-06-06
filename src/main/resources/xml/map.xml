@@ -664,7 +664,7 @@
         <vertex>
             <id>34</id>
             <posX>270.5</posX>
-            <posY>543.5</posY>
+            <posY>343.5</posY>
             <linked>
                 <vertexID>33</vertexID>
                 <vertexID>28</vertexID>
