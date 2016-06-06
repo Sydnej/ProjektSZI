@@ -1,6 +1,5 @@
 package gui;
 
-import DecisionTree.C45;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,6 +28,23 @@ public class Main extends Application {
         Collection<GraphVertex> values = area.getGraphVertices().values();
         new ArrayList<>(values).subList(0, 19).forEach(TourManager::addVertex);
 
+        //ALGORYTM GENETYCZNY
+        //inicjalizowanie populacji
+        model.GeneticAlg.Population pop = new model.GeneticAlg.Population(50, true);
+        System.out.println("Initial distance: " + pop.getFittest().getDistance());
+
+        //ewolucja populacji do 100 generacji
+        pop = model.GeneticAlg.GA.evolvePopulation(pop);
+        for (int i = 0; i < 100; i++) {
+            pop = model.GeneticAlg.GA.evolvePopulation(pop);
+        }
+        //Rezultat
+        System.out.println("Finished");
+        System.out.println("Final distance: " + pop.getFittest().getDistance());
+        System.out.println("Solution:");
+        System.out.println(pop.getFittest());
+        //
+        //koniec GA
 
         launch(args);
     }
@@ -81,24 +97,6 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //ALGORYTM GENETYCZNY
-        //inicjalizowanie populacji
-        model.GeneticAlg.Population pop = new model.GeneticAlg.Population(50, true);
-        System.out.println("Initial distance: " + pop.getFittest().getDistance());
-
-        //ewolucja populacji do 100 generacji
-        pop = model.GeneticAlg.GA.evolvePopulation(pop);
-        for (int i = 0; i < 100; i++) {
-            pop = model.GeneticAlg.GA.evolvePopulation(pop);
-        }
-        //Rezultat
-        System.out.println("Finished");
-        System.out.println("Final distance: " + pop.getFittest().getDistance());
-        System.out.println("Solution:");
-        System.out.println(pop.getFittest());
-        //
-        //koniec GA
     }
 
 }
