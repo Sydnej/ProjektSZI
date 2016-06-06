@@ -71,7 +71,7 @@ public class MainController implements Initializable {
     private Weather weather = new Weather();
     private int speed = 10; //ms
 
-    public void setSpeedTractor(int newSpeed){
+    public void setSpeedTractor(int newSpeed) {
         speed = newSpeed;
     }
 
@@ -79,7 +79,7 @@ public class MainController implements Initializable {
         try {
             Thread.sleep(speed);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.info("Interrupted");
         }
     }
 
@@ -93,20 +93,6 @@ public class MainController implements Initializable {
         //czyszczenie
         graphicsContext.clearRect(0, 0, width, height);
         graphicsContext.drawImage(map, 0, 0);
-
-//        if (currentlyActiveKeys.contains("ESCAPE")) {
-//            stage.close();
-//        }
-//
-//        if (currentlyActiveKeys.contains("LEFT")) {
-//            moveTractor(Direction.LEFT);
-//        } else if (currentlyActiveKeys.contains("RIGHT")) {
-//            moveTractor(Direction.RIGHT);
-//        } else if (currentlyActiveKeys.contains("DOWN")) {
-//            moveTractor(Direction.DOWN);
-//        } else if (currentlyActiveKeys.contains("UP")) {
-//            moveTractor(Direction.UP);
-//        }
         graphicsContext.drawImage(tractorImage, positionX, positionY);
     }
 
@@ -122,11 +108,11 @@ public class MainController implements Initializable {
                 break;
             case DOWN:
                 tractorImage = tractorDown;
-                positionY = positionY - 0.5;
+                positionY = positionY + 0.5;
                 break;
             case UP:
                 tractorImage = tractorUp;
-                positionY = positionY + 0.5;
+                positionY = positionY - 0.5;
                 break;
         }
         LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
@@ -171,6 +157,8 @@ public class MainController implements Initializable {
                         (o1) - flogic.calcPriorityForHarvest(o2)));
                 if (max.isPresent()) {
                     Field field = max.get();
+                    fieldsTable.getSelectionModel().select(field);
+                    fieldsTable.scrollTo(field);
                     GraphVertex goalVertex = graphVertices.get(field.getId());
                     State result = new UnifiedCostSearch().calc(tractor.getArea(), tractor.getCurrentPosition(),
                             goalVertex, null);
@@ -259,12 +247,12 @@ public class MainController implements Initializable {
         }
         if (posY >= positionY) {
             while (posY > positionY) {
-                moveTractor(Direction.UP);
+                moveTractor(Direction.DOWN);
                 slowTractor();
             }
         } else {
             while (posY < positionY) {
-                moveTractor(Direction.DOWN);
+                moveTractor(Direction.UP);
                 slowTractor();
 
             }
