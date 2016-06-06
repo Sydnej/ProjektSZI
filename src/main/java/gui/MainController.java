@@ -2,6 +2,7 @@ package gui;
 
 import DecisionTree.C45;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -190,25 +191,65 @@ public class MainController implements Initializable {
             while (true) {
                 Map<Integer, Field> fields = tractor.getArea().getFields();
                 Map<Integer, GraphVertex> graphVertices = tractor.getArea().getGraphVertices();
-                Optional<Field> max = fields.values().stream().max((o1, o2) -> (int) (flogic.calcPriorityForHarvest
-                        (o1) - flogic.calcPriorityForHarvest(o2)));
-                if (max.isPresent()) {
-                    Field field = max.get();
-                    fieldsTable.getSelectionModel().select(field);
-                    fieldsTable.scrollTo(field);
-                    GraphVertex goalVertex = graphVertices.get(field.getId());
-                    State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
-                            .getCurrentPosition(), goalVertex);
-                    LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
-                    goViaPoints(path);
-                    tractor.setCurrentPosition(goalVertex);
-                    field.setYields(0);
+                Optional<Field> toHarvest = fields.values().stream().max((o1, o2) -> (int) (flogic
+                        .calcPriorityForHarvest(o1) - flogic.calcPriorityForHarvest(o2)));
+                Optional<Field> toCultivation = fields.values().stream().max((o1, o2) -> (int) (flogic
+                        .calcPriorityForCultivation(o1) - flogic.calcPriorityForCultivation(o2)));
+                Optional<Field> toFertilization = fields.values().stream().max((o1, o2) -> (int) (flogic
+                        .calcPriorityForFertilization(o1) - flogic.calcPriorityForFertilization(o2)));
+                if (toHarvest.isPresent() && toHarvest.get().getYields() > 60) {
+                    goHarvest(graphVertices, toHarvest);
+                } else if (toCultivation.isPresent() && toCultivation.get().getWeeds() > 60) {
+                    goCultivation(graphVertices, toCultivation);
+                } else if (toFertilization.isPresent() && toFertilization.get().getMinerals() < 30) {
+                    goFertilization(graphVertices, toFertilization);
                 }
             }
-        });
+        }
+
+        );
         thread.setName("Tractor thread");
         thread.setDaemon(true);
         thread.start();
+    }
+
+    private void goHarvest(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
+        Field field = max.get();
+        fieldsTable.getSelectionModel().select(field);
+        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        GraphVertex goalVertex = graphVertices.get(field.getId());
+        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
+                .getCurrentPosition(), goalVertex);
+        LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
+        goViaPoints(path);
+        tractor.setCurrentPosition(goalVertex);
+        field.setYields(0);
+    }
+
+    private void goCultivation(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
+        Field field = max.get();
+        fieldsTable.getSelectionModel().select(field);
+        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        GraphVertex goalVertex = graphVertices.get(field.getId());
+        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
+                .getCurrentPosition(), goalVertex);
+        LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
+        goViaPoints(path);
+        tractor.setCurrentPosition(goalVertex);
+        field.setWeeds(0);
+    }
+
+    private void goFertilization(Map<Integer, GraphVertex> graphVertices, Optional<Field> min) {
+        Field field = min.get();
+        fieldsTable.getSelectionModel().select(field);
+        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        GraphVertex goalVertex = graphVertices.get(field.getId());
+        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
+                .getCurrentPosition(), goalVertex);
+        LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
+        goViaPoints(path);
+        tractor.setCurrentPosition(goalVertex);
+        field.setMinerals(100);
     }
 
     private void initWeatherPropertySheet() {

@@ -63,7 +63,7 @@ public class Field {
         return yields;
     }
 
-    public int getWeeds() {
+    public synchronized int getWeeds() {
         return weeds.get();
     }
 
@@ -75,7 +75,7 @@ public class Field {
         return weeds;
     }
 
-    public int getMinerals() {
+    public synchronized int getMinerals() {
         return minerals.get();
     }
 
