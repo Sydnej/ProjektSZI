@@ -1,11 +1,8 @@
 package ucs;
 
-import model.area.Area;
-import model.area.Field;
 import model.area.GraphVertex;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class UnifiedCostSearch {
 
@@ -23,14 +20,12 @@ public class UnifiedCostSearch {
     }
 
     /**
-     * @param area
+     * @param graphVertices
      * @param startVertex
      * @param endVertex
-     * @param costFunction
      * @return null if path not exists. Otherwise best path.
      */
-    public State calc(Area area, GraphVertex startVertex, GraphVertex endVertex, Function<Field, Double>
-            costFunction) {
+    public static State calc(Map<Integer, GraphVertex> graphVertices, GraphVertex startVertex, GraphVertex endVertex) {
         State startState = new State(startVertex);
         State endState = new State(endVertex);
         Set<State> open = new HashSet<>();
@@ -38,8 +33,8 @@ public class UnifiedCostSearch {
         Set<State> closed = new HashSet<>();
 
         while (!open.isEmpty()) {
-            Optional<State> result = open.stream().sorted(Comparator.comparingDouble(this::calcCost)).filter
-                    (vertex -> !closed.contains(vertex)).findFirst();
+            Optional<State> result = open.stream().sorted(Comparator.comparingDouble(UnifiedCostSearch::calcCost))
+                    .filter(vertex -> !closed.contains(vertex)).findFirst();
             if (result.isPresent()) {
                 State state = result.get();
                 open.remove(state);
@@ -48,7 +43,7 @@ public class UnifiedCostSearch {
                 }
                 closed.add(state);
                 for (Integer vertexNumber : state.getGraphVertex().getLinkedVertices()) {
-                    GraphVertex childVertex = area.getGraphVertices().get(vertexNumber);
+                    GraphVertex childVertex = graphVertices.get(vertexNumber);
                     State childState = new State(childVertex);
                     childState.setParent(state);
                     open.add(childState);
@@ -58,14 +53,14 @@ public class UnifiedCostSearch {
         return null;
     }
 
-    private double calcCost(State state) {
+    private static double calcCost(State state) {
         if (state.hasParent()) {
             return distanceToParent(state) + calcCost(state.getParent());
         }
         return 0;
     }
 
-    private double distanceToParent(State state) {
+    private static double distanceToParent(State state) {
         GraphVertex stateVertex = state.getGraphVertex();
         GraphVertex parentVertex = state.getParent().getGraphVertex();
         if (stateVertex.getX() == parentVertex.getX()) {

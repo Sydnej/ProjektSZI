@@ -11,11 +11,10 @@ public class UnifiedCostSearchTest {
 
     @Test
     public void testCalc() {
-        UnifiedCostSearch ucs = new UnifiedCostSearch();
         Area area = new Area();
         area.loadData(getClass().getResourceAsStream("../xml/map.xml"));
         Map<Integer, GraphVertex> graphVertices = area.getGraphVertices();
-        State result = ucs.calc(area, graphVertices.get(0), graphVertices.get(10), null);
+        State result = UnifiedCostSearch.calc(area.getGraphVertices(), graphVertices.get(0), graphVertices.get(10));
         printPath(result);
         LinkedList<GraphVertex> vertices = UnifiedCostSearch.buildPath(result);
         System.out.println();

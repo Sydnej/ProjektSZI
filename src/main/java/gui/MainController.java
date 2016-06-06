@@ -160,8 +160,8 @@ public class MainController implements Initializable {
                     fieldsTable.getSelectionModel().select(field);
                     fieldsTable.scrollTo(field);
                     GraphVertex goalVertex = graphVertices.get(field.getId());
-                    State result = new UnifiedCostSearch().calc(tractor.getArea(), tractor.getCurrentPosition(),
-                            goalVertex, null);
+                    State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
+                            .getCurrentPosition(), goalVertex);
                     LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
                     goViaPoints(path);
                     tractor.setCurrentPosition(goalVertex);
@@ -234,7 +234,6 @@ public class MainController implements Initializable {
     }
 
     private void goToThePoint(double posX, double posY) {
-        final int ms = 5;
         if (posX >= positionX) {
             while (posX > positionX) {
                 moveTractor(Direction.RIGHT);
