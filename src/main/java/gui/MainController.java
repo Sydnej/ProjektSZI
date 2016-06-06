@@ -236,7 +236,7 @@ public class MainController implements Initializable {
             while (posX > positionX) {
                 moveTractor(Direction.RIGHT);
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     LOGGER.info("Interrupted");
                     break;
@@ -246,7 +246,7 @@ public class MainController implements Initializable {
             while (posX < positionX) {
                 moveTractor(Direction.LEFT);
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     LOGGER.info("Interrupted");
                     break;
@@ -257,7 +257,7 @@ public class MainController implements Initializable {
             while (posY > positionY) {
                 moveTractor(Direction.UP);
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     LOGGER.info("Interrupted");
                     break;
@@ -267,7 +267,7 @@ public class MainController implements Initializable {
             while (posY < positionY) {
                 moveTractor(Direction.DOWN);
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     LOGGER.info("Interrupted");
                     break;
