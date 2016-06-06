@@ -41,6 +41,8 @@ public class MainController implements Initializable {
     @FXML
     private Label rainLabel;
     @FXML
+    private Label day;
+    @FXML
     private TableView<Field> fieldsTable;
     @FXML
     private TableColumn<Field, Integer> fieldNoColumn;
@@ -50,6 +52,8 @@ public class MainController implements Initializable {
     private TableColumn<Field, Integer> weedsColumn;
     @FXML
     private TableColumn<Field, Integer> mineralsColumn;
+    @FXML
+    private TableColumn<Field, Integer> humidityColumn;
     @FXML
     private TextField speed;
     @FXML
@@ -135,6 +139,8 @@ public class MainController implements Initializable {
         positionX = tractor.getCurrentPosition().getX();
         positionY = tractor.getCurrentPosition().getY();
 
+        day.setText("Day 1");
+
         decisionTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -219,6 +225,8 @@ public class MainController implements Initializable {
         weedsColumn.setCellFactory(new PropertyCellFactory(false));
         mineralsColumn.setCellValueFactory(param -> param.getValue().mineralsProperty().asObject());
         mineralsColumn.setCellFactory(new PropertyCellFactory(true));
+        humidityColumn.setCellValueFactory(param -> param.getValue().humidityProperty().asObject());
+        humidityColumn.setCellFactory(new PropertyCellFactory(true));
         Collection<Field> fields = tractor.getArea().getFields().values();
         fieldsTable.getItems().addAll(fields);
     }
