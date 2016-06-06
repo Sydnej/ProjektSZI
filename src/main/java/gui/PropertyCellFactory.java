@@ -42,9 +42,9 @@ class PropertyCellFactory implements javafx.util.Callback<javafx.scene.control.T
                 setStyle("");
             } else {
                 setText(item.toString());
-                if (item >= 70) {
+                if (item >= 60) {
                     setStyle("-fx-background-color: " + highColor);
-                } else if (item >= 50) {
+                } else if (item >= 30) {
                     setStyle("-fx-background-color: " + middleColor);
                 } else {
                     setStyle("-fx-background-color: " + lowColor);
