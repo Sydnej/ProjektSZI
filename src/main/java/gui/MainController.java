@@ -163,6 +163,8 @@ public class MainController implements Initializable {
         initWeatherPropertySheet();
         initFieldsTable();
         startTractor();
+        //startGeneticTractor();
+
 
         daySpeedButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -208,6 +210,28 @@ public class MainController implements Initializable {
         }
 
         );
+        thread.setName("Tractor thread");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void startGeneticTractor() {
+        Thread thread = new Thread(() -> {
+
+            FuzzyLogic flogic = new FuzzyLogic();
+            List<GraphVertex> tractorPath = new ArrayList<>();
+            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2(); i++) {
+                tractorPath.add(model.GeneticAlg.Tour.getVertex2(i));
+            }
+            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2()-1; i++) {
+                State calc = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractorPath.get(i), tractorPath.get(i + 1));
+                goViaPoints(UnifiedCostSearch.buildPath(calc));
+            }
+            while (true) {
+                //tractor.setCurrentPosition(goalVertex);
+                //field.setYields(0);
+            }
+        });
         thread.setName("Tractor thread");
         thread.setDaemon(true);
         thread.start();

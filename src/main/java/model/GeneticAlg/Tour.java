@@ -10,6 +10,8 @@ public class Tour {
     // Holds our tour of cities
     //private List tour = new ArrayList<City>();
     private List tour = new ArrayList<GraphVertex>();
+    public static List tour2 = new ArrayList<GraphVertex>();
+
     // Cache
     private double fitness = 0;
     private int distance = 0;
@@ -18,6 +20,7 @@ public class Tour {
     public Tour(){
         for (int i = 0; i < TourManager.numberOfVertex(); i++) {
             tour.add(null);
+            tour2.add(null);
         }
     }
 
@@ -33,6 +36,7 @@ public class Tour {
         }
         // Randomly reorder the tour
         Collections.shuffle(tour);
+        Collections.shuffle(tour2);
     }
 
     // Gets a city from the tour
@@ -45,9 +49,14 @@ public class Tour {
         return (GraphVertex)tour.get(tourPosition);
     }
 
+    public static GraphVertex getVertex2(int tourPosition) {
+        return (GraphVertex)tour2.get(tourPosition);
+    }
+
     // Sets a city in a certain position within a tour
     public void setCity(int tourPosition, City city) {
         tour.set(tourPosition, city);
+        tour2.set(tourPosition, city);
         // If the tours been altered we need to reset the fitness and distance
         fitness = 0;
         distance = 0;
@@ -56,6 +65,7 @@ public class Tour {
     // Sets a city in a certain position within a tour
     public void setVertex(int tourPosition, GraphVertex city) {
         tour.set(tourPosition, city);
+        tour2.set(tourPosition, city);
         // If the tours been altered we need to reset the fitness and distance
         fitness = 0;
         distance = 0;
@@ -100,6 +110,10 @@ public class Tour {
         return tour.size();
     }
 
+    public static int tourSize2() {
+        return tour2.size();
+    }
+
     // Check if the tour contains a city
     public boolean containsCity(GraphVertex city){
         return tour.contains(city);
@@ -108,8 +122,9 @@ public class Tour {
     @Override
     public String toString() {
         String geneString = "|";
+        tour2 = tour;
         for (int i = 0; i < tourSize(); i++) {
-            geneString += getVertex(i).getX()+","+getVertex(i).getY()+"|";
+            geneString += getVertex(i).getId()+":"+getVertex(i).getX()+","+getVertex(i).getY()+"|";
         }
         return geneString;
     }
