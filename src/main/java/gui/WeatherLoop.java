@@ -5,9 +5,13 @@ import model.area.Area;
 import model.area.Field;
 import model.weather.Season;
 import model.weather.Weather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 class WeatherLoop implements Runnable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherLoop.class);
     private final Area area;
     private final Weather weather;
     private int daySpeed = 10000;
@@ -23,11 +27,16 @@ class WeatherLoop implements Runnable {
         while (true) {
             Platform.runLater(weather::update);
             area.getFields().values().forEach(this::updateProperties);
-            sleepOneDay();
+            try {
+                sleepOneDay();
+            } catch (InterruptedException e) {
+                LOGGER.info("Interrupted");
+                Thread.currentThread().interrupt();
+            }
             numberOfDays++;
-            if((numberOfDays % 90 == 0) && (numberOfDays > 0)) {
+            if ((numberOfDays % 90 == 0) && (numberOfDays > 0)) {
                 Season currentSeason = weather.getSeason();
-                weather.setSeason(Season.values()[(currentSeason.ordinal()+1)%4]);
+                weather.setSeason(Season.values()[(currentSeason.ordinal() + 1) % 4]);
             }
         }
     }
@@ -52,12 +61,8 @@ class WeatherLoop implements Runnable {
         this.daySpeed = daySpeed;
     }
 
-    public void sleepOneDay() {
-        try {
-            Thread.sleep(daySpeed);
-        } catch(InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void sleepOneDay() throws InterruptedException {
+        Thread.sleep(daySpeed);
     }
 
 }

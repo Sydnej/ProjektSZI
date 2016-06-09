@@ -4,7 +4,6 @@ import DecisionTree.C45;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -12,16 +11,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.FuzzyLogic;
+import model.GeneticAlg.Tour;
 import model.Tractor;
 import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
 import model.weather.Weather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ucs.State;
 import ucs.UnifiedCostSearch;
 
@@ -30,11 +31,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController implements Initializable {
 
-    private static final Logger LOGGER = Logger.getGlobal();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
     @FXML
     private Label temperatureLabel;
     @FXML
@@ -86,16 +88,15 @@ public class MainController implements Initializable {
     private int tractorSpeed = 10; //ms
     private WeatherLoop weatherLoop;
 
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Thread tractorThread;
+
     public void setSpeedTractor(int newSpeed) {
         tractorSpeed = newSpeed;
     }
 
-    private void slowTractor() {
-        try {
-            Thread.sleep(tractorSpeed);
-        } catch (InterruptedException e) {
-            LOGGER.info("Interrupted");
-        }
+    private void slowTractor() throws InterruptedException {
+        Thread.sleep(tractorSpeed);
     }
 
 
@@ -143,143 +144,65 @@ public class MainController implements Initializable {
         positionX = tractor.getCurrentPosition().getX();
         positionY = tractor.getCurrentPosition().getY();
 
-        decisionTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                C45 TreeDecision = new C45();
-                TreeDecision.C45();
-                System.out.println(TreeDecision.MakeDecision("overcast", "hot", "normal", "weak"));
-            }
-        });
-
-        speedButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                setSpeedTractor(Integer.parseInt(speed.getText()));
-            }
-        });
-
         startWeather();
         initWeatherPropertySheet();
         initFieldsTable();
-        startTractor();
-        //startGeneticTractor();
+//        startTractor();
+//        startGeneticTractor();
 
 
-        daySpeedButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                weatherLoop.setDaySpeed(Integer.parseInt(daySpeed.getText()));
-            }
-        });
-
-        //pobieranie rozdzielczości ektanu
-//        height = (int) Screen.getPrimary().getVisualBounds().getHeight();
-//        width = (int) Screen.getPrimary().getVisualBounds().getWidth();
-//        System.out.print("height: " + height + " width: " + width);
-
-//        canvas.setWidth(width);
-//        canvas.setHeight(height);
-
-        //ładowanie obiektów
         loadImages();
         graphicsContext = canvas.getGraphicsContext2D();
 
     }
 
     private void startTractor() {
-        Thread thread = new Thread(() -> {
-            FuzzyLogic flogic = new FuzzyLogic();
-            while (true) {
-                Map<Integer, Field> fields = tractor.getArea().getFields();
-                Map<Integer, GraphVertex> graphVertices = tractor.getArea().getGraphVertices();
-                Optional<Field> toHarvest = fields.values().stream().max((o1, o2) -> (int) (flogic
-                        .calcPriorityForHarvest(o1) - flogic.calcPriorityForHarvest(o2)));
-                Optional<Field> toCultivation = fields.values().stream().max((o1, o2) -> (int) (flogic
-                        .calcPriorityForCultivation(o1) - flogic.calcPriorityForCultivation(o2)));
-                Optional<Field> toFertilization = fields.values().stream().max((o1, o2) -> (int) (flogic
-                        .calcPriorityForFertilization(o1) - flogic.calcPriorityForFertilization(o2)));
-                if (toHarvest.isPresent() && toHarvest.get().getYields() > 60) {
-                    goHarvest(graphVertices, toHarvest);
-                } else if (toCultivation.isPresent() && toCultivation.get().getWeeds() > 60) {
-                    goCultivation(graphVertices, toCultivation);
-                } else if (toFertilization.isPresent() && toFertilization.get().getMinerals() < 30) {
-                    goFertilization(graphVertices, toFertilization);
-                }
-            }
-        }
-
-        );
-        thread.setName("Tractor thread");
-        thread.setDaemon(true);
-        thread.start();
+        stopTractor();
+        tractorThread = new Thread(new TractorRunnable());
+        tractorThread.setName("Tractor thread");
+        tractorThread.setDaemon(true);
+        tractorThread.start();
     }
 
     private void startGeneticTractor() {
-        Thread thread = new Thread(() -> {
-
-            FuzzyLogic flogic = new FuzzyLogic();
-            List<GraphVertex> tractorPath = new ArrayList<>();
-            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2(); i++) {
-                tractorPath.add(model.GeneticAlg.Tour.getVertex2(i));
-            }
-            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2()-1; i++) {
-                State calc = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractorPath.get(i), tractorPath.get(i + 1));
-                goViaPoints(UnifiedCostSearch.buildPath(calc));
-            }
-            while (true) {
-                //tractor.setCurrentPosition(goalVertex);
-                //field.setYields(0);
-            }
-        });
-        thread.setName("Tractor thread");
-        thread.setDaemon(true);
-        thread.start();
+        stopTractor();
+        tractorThread = new Thread(new GeneticTractorRunnable());
+        tractorThread.setName("Tractor thread");
+        tractorThread.setDaemon(true);
+        tractorThread.start();
     }
 
-    private void goHarvest(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
+    private void goHarvest(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) throws InterruptedException {
         Field field = max.get();
-        Platform.runLater(() -> {
-            fieldsTable.getSelectionModel().select(field);
-            fieldsTable.scrollTo(field);
-        });
-        GraphVertex goalVertex = graphVertices.get(field.getId());
-        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
-                .getCurrentPosition(), goalVertex);
-        LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
-        goViaPoints(path);
-        tractor.setCurrentPosition(goalVertex);
+        goToField(graphVertices, field);
         field.setYields(0);
     }
 
-    private void goCultivation(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
+    private void goCultivation(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) throws
+            InterruptedException {
         Field field = max.get();
-        Platform.runLater(() -> {
-            fieldsTable.getSelectionModel().select(field);
-            fieldsTable.scrollTo(field);
-        });
-        GraphVertex goalVertex = graphVertices.get(field.getId());
-        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
-                .getCurrentPosition(), goalVertex);
-        LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
-        goViaPoints(path);
-        tractor.setCurrentPosition(goalVertex);
+        goToField(graphVertices, field);
         field.setWeeds(0);
     }
 
-    private void goFertilization(Map<Integer, GraphVertex> graphVertices, Optional<Field> min) {
+    private void goFertilization(Map<Integer, GraphVertex> graphVertices, Optional<Field> min) throws
+            InterruptedException {
         Field field = min.get();
+        goToField(graphVertices, field);
+        field.setMinerals(100);
+    }
+
+    private void goToField(Map<Integer, GraphVertex> graphVertices, Field field) throws InterruptedException {
         Platform.runLater(() -> {
             fieldsTable.getSelectionModel().select(field);
             fieldsTable.scrollTo(field);
         });
         GraphVertex goalVertex = graphVertices.get(field.getId());
-        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
-                .getCurrentPosition(), goalVertex);
+        State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor.getCurrentPosition(),
+                goalVertex);
         LinkedList<GraphVertex> path = UnifiedCostSearch.buildPath(result);
         goViaPoints(path);
         tractor.setCurrentPosition(goalVertex);
-        field.setMinerals(100);
     }
 
     private void initWeatherPropertySheet() {
@@ -344,7 +267,7 @@ public class MainController implements Initializable {
         }.start();
     }
 
-    private void goToThePoint(double posX, double posY) {
+    private void goToThePoint(double posX, double posY) throws InterruptedException {
         if (posX >= positionX) {
             while (posX > positionX) {
                 moveTractor(Direction.RIGHT);
@@ -369,9 +292,108 @@ public class MainController implements Initializable {
         }
     }
 
-    public void goViaPoints(List<GraphVertex> points) {
+    public void goViaPoints(List<GraphVertex> points) throws InterruptedException {
         for (GraphVertex point : points) {
             goToThePoint(point.getX(), point.getY());
+        }
+    }
+
+    @FXML
+    private void handleTractor() {
+        startTractor();
+    }
+
+    @FXML
+    private void handleGeneticTractor() {
+        startGeneticTractor();
+    }
+
+    @FXML
+    public void handleSpeedButton() {
+        setSpeedTractor(Integer.parseInt(speed.getText()));
+    }
+
+    @FXML
+    public void handleDecisionTreeButton() {
+        C45 TreeDecision = new C45();
+        TreeDecision.C45();
+        System.out.println(TreeDecision.MakeDecision("overcast", "hot", "normal", "weak"));
+    }
+
+    @FXML
+    public void handleDaySpeedButton() {
+        weatherLoop.setDaySpeed(Integer.parseInt(daySpeed.getText()));
+    }
+
+    @FXML
+    public void handleStopTractor() {
+        stopTractor();
+    }
+
+    private void stopTractor() {
+        if (tractorThread != null && tractorThread.isAlive()) {
+            tractorThread.interrupt();
+        }
+    }
+
+    private class TractorRunnable implements Runnable {
+        @Override
+        public void run() {
+            Thread.currentThread().setName("TractorThread");
+            FuzzyLogic flogic = new FuzzyLogic();
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Map<Integer, Field> fields = tractor.getArea().getFields();
+                    Map<Integer, GraphVertex> graphVertices = tractor.getArea().getGraphVertices();
+                    Optional<Field> toHarvest = fields.values().stream().max((o1, o2) -> (int) (flogic
+                            .calcPriorityForHarvest(o1) - flogic.calcPriorityForHarvest(o2)));
+
+
+                    Optional<Field> toCultivation = fields.values().stream().max((o1, o2) -> (int) (flogic
+                            .calcPriorityForCultivation(o1) - flogic.calcPriorityForCultivation(o2)));
+                    Optional<Field> toFertilization = fields.values().stream().max((o1, o2) -> (int) (flogic
+                            .calcPriorityForFertilization(o1) - flogic.calcPriorityForFertilization(o2)));
+                    if (toHarvest.isPresent() && toHarvest.get().getYields() > 60) {
+                        goHarvest(graphVertices, toHarvest);
+                    } else if (toCultivation.isPresent() && toCultivation.get().getWeeds() > 60) {
+                        goCultivation(graphVertices, toCultivation);
+                    } else if (toFertilization.isPresent() && toFertilization.get().getMinerals() < 30) {
+                        goFertilization(graphVertices, toFertilization);
+                    }
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    private class GeneticTractorRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            Thread.currentThread().setName("GeneticTractorThread");
+            List<GraphVertex> tractorPath = new ArrayList<>();
+            for (int i = 0; i < Tour.tourSize2(); i++) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+                tractorPath.add(Tour.getVertex2(i));
+            }
+            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2() - 1; i++) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+                State calc = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractorPath.get(i),
+                        tractorPath.get(i + 1));
+
+                try {
+                    goViaPoints(UnifiedCostSearch.buildPath(calc));
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
     }
 }
