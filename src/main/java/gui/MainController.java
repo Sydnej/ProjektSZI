@@ -239,8 +239,10 @@ public class MainController implements Initializable {
 
     private void goHarvest(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
         Field field = max.get();
-        fieldsTable.getSelectionModel().select(field);
-        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        Platform.runLater(() -> {
+            fieldsTable.getSelectionModel().select(field);
+            fieldsTable.scrollTo(field);
+        });
         GraphVertex goalVertex = graphVertices.get(field.getId());
         State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
                 .getCurrentPosition(), goalVertex);
@@ -252,8 +254,10 @@ public class MainController implements Initializable {
 
     private void goCultivation(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) {
         Field field = max.get();
-        fieldsTable.getSelectionModel().select(field);
-        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        Platform.runLater(() -> {
+            fieldsTable.getSelectionModel().select(field);
+            fieldsTable.scrollTo(field);
+        });
         GraphVertex goalVertex = graphVertices.get(field.getId());
         State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
                 .getCurrentPosition(), goalVertex);
@@ -265,8 +269,10 @@ public class MainController implements Initializable {
 
     private void goFertilization(Map<Integer, GraphVertex> graphVertices, Optional<Field> min) {
         Field field = min.get();
-        fieldsTable.getSelectionModel().select(field);
-        Platform.runLater(() -> fieldsTable.scrollTo(field));
+        Platform.runLater(() -> {
+            fieldsTable.getSelectionModel().select(field);
+            fieldsTable.scrollTo(field);
+        });
         GraphVertex goalVertex = graphVertices.get(field.getId());
         State result = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractor
                 .getCurrentPosition(), goalVertex);
