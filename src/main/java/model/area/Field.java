@@ -14,6 +14,7 @@ import java.util.Random;
  * <li>plony</li>
  * <li>chwasty</li>
  * <li>minerały</li>
+ * <li>wilgotność</li>
  * </ul>
  * </p>
  */
