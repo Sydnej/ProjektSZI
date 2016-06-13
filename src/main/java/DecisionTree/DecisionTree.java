@@ -51,7 +51,7 @@ public class DecisionTree {
 
     class Node {
 
-        private String name;
+        public String name;
         private Node parent;
         private Map<String, Node> childrens = new HashMap<String, Node>();
 

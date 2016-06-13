@@ -81,16 +81,16 @@ public class Weather {
 
         switch (season) {
             case SPRING:
-                setRain(random.nextInt(20) + 30);         // od 30 do 49
+                setRain(random.nextInt(20));         // od 30 do 49
                 break;
             case SUMMER:
-                setRain(random.nextInt(20) + 55);         // od 55 do 74
+                setRain(random.nextInt(20));         // od 55 do 74
                 break;
             case AUTUMN:
-                setRain(random.nextInt(20) + 30);         // od 30 do 49
+                setRain(random.nextInt(20));         // od 30 do 49
                 break;
             case WINTER:
-                setRain(random.nextInt(10) + 30);         // od 30 do 39
+                setRain(random.nextInt(10));         // od 30 do 39
                 break;
         }
     }

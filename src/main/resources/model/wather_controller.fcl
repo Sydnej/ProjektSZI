@@ -1,0 +1,60 @@
+FUNCTION_BLOCK field_controller	// Definicja bloku (moze byc wiecej blokow w pliku)
+
+VAR_INPUT				// Definiuje zmienne wejsciowe
+	rain : REAL;
+	humidity : REAL;
+END_VAR
+
+VAR_OUTPUT				// Definiuje zmienne wyjsciowe
+	weeds : REAL;
+	humidity2 : REAL;
+END_VAR
+
+FUZZIFY rain
+	TERM low := (0, 1) (6, 0) ;
+	TERM middle := (5, 0) (10, 1) (14, 1) (24,0);
+	TERM much := (20, 0) (33, 1);
+END_FUZZIFY
+
+
+FUZZIFY humidity
+	TERM low := (0,1) (20,1) (40,0);
+    TERM middle := (30,0) (50,1) (60,0);
+    TERM much := (50,0) (70,1) (100,1);
+END_FUZZIFY
+
+DEFUZZIFY weeds
+	TERM low := (0,1) (20,1) (40,0);
+	TERM middle := (30,0) (50,1) (60,0);
+	TERM much := (50,0) (70,1) (100,1);
+
+	
+	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
+	DEFAULT := 0;		
+END_DEFUZZIFY
+
+DEFUZZIFY humidity2
+	TERM low := (0,1) (20,1) (40,0);
+	TERM middle := (30,0) (50,1) (60,0);
+	TERM much := (50,0) (70,1) (100,1);
+
+	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Uzycie 'min' jako 'and' (implikuje uzycie 'max' jako 'or' dla zapewnienia praw DeMorgan'a)
+	ACT : MIN;			// Uzycie  'min' jako metody aktywacji
+	ACCU : MAX;			// Metoda agregacji - 'max'
+
+	RULE 1 : IF rain IS much THEN humidity2 IS much;
+	RULE 2 : IF rain IS low THEN humidity2 IS low;
+	RULE 3 : IF rain IS middle THEN humidity2 IS middle;
+	RULE 4 : IF humidity IS much THEN weeds IS much;
+	RULE 5 : IF humidity IS middle THEN weeds IS middle;
+	RULE 6 : IF humidity IS low THEN weeds IS low;
+
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
