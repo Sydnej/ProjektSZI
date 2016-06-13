@@ -21,41 +21,11 @@ public class FuzzyLogic {
         }
     }
 
-    /**
-     * Priorytet do nawożenia
-     *
-     * @param field
-     * @return priority
-     */
-    public double calcPriorityForFertilization(Field field) {
-        return calcPriority(field, "fertilizationPriority");
-    }
-
-    /**
-     * Priorytet do pielenia
-     *
-     * @param field
-     * @return priority
-     */
-    public double calcPriorityForCultivation(Field field) {
-        return calcPriority(field, "cultivationPriority");
-    }
-
-    /**
-     * Priorytet do zbierania plonów
-     *
-     * @param field
-     * @return priority
-     */
-    public double calcPriorityForHarvest(Field field) {
-        return calcPriority(field, "harvestPriority");
-    }
-
-    private double calcPriority(Field field, String outputParameterName) {
+    public double calcPriority(Field field) {
         fis.setVariable("yields", field.getYields());
         fis.setVariable("weeds", field.getWeeds());
         fis.setVariable("minerals", field.getMinerals());
         fis.evaluate();
-        return fis.getVariable(outputParameterName).getValue();
+        return fis.getVariable("priority").getValue();
     }
 }

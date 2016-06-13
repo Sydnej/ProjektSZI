@@ -1,8 +1,6 @@
 package gui;
 
-import java.io.PrintWriter;
-import weka.classifiers.trees.LMT;
-import DecisionTree.C45;
+import MachineLearning.TestProjectWIP;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -19,7 +17,6 @@ import javafx.stage.Stage;
 import model.FuzzyLogic;
 import model.GeneticAlg.Tour;
 import model.Tractor;
-import MachineLearning.TestProjectWIP;
 import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
@@ -29,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import ucs.State;
 import ucs.UnifiedCostSearch;
 import weka.classifiers.Classifier;
-import weka.classifiers.functions.SMO;
+import weka.classifiers.trees.LMT;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
@@ -38,7 +35,6 @@ import weka.core.converters.ArffLoader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -100,7 +96,7 @@ public class MainController implements Initializable {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Thread tractorThread;
-   // public C45 TreeDecision = new C45();
+    // public C45 TreeDecision = new C45();
 
     public void setSpeedTractor(int newSpeed) {
         tractorSpeed = newSpeed;
@@ -142,7 +138,7 @@ public class MainController implements Initializable {
                 positionY = positionY - 0.5;
                 break;
         }
-    //    LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
+        LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
     }
 
     @Override
@@ -324,8 +320,8 @@ public class MainController implements Initializable {
     }
 
     @FXML
-        private void handleGeneticTractor() {
-            startGeneticTractor();
+    private void handleGeneticTractor() {
+        startGeneticTractor();
     }
 
     @FXML
@@ -370,20 +366,16 @@ public class MainController implements Initializable {
                 try {
                     Map<Integer, Field> fields = tractor.getArea().getFields();
                     Map<Integer, GraphVertex> graphVertices = tractor.getArea().getGraphVertices();
-                    Optional<Field> toHarvest = fields.values().stream().max((o1, o2) -> (int) (flogic
-                            .calcPriorityForHarvest(o1) - flogic.calcPriorityForHarvest(o2)));
-
-
-                    Optional<Field> toCultivation = fields.values().stream().max((o1, o2) -> (int) (flogic
-                            .calcPriorityForCultivation(o1) - flogic.calcPriorityForCultivation(o2)));
-                    Optional<Field> toFertilization = fields.values().stream().max((o1, o2) -> (int) (flogic
-                            .calcPriorityForFertilization(o1) - flogic.calcPriorityForFertilization(o2)));
-                    if (toHarvest.isPresent() && toHarvest.get().getYields() > 60) {
-                        goHarvest(graphVertices, toHarvest);
-                    } else if (toCultivation.isPresent() && toCultivation.get().getWeeds() > 60) {
-                        goCultivation(graphVertices, toCultivation);
-                    } else if (toFertilization.isPresent() && toFertilization.get().getMinerals() < 30) {
-                        goFertilization(graphVertices, toFertilization);
+                    Optional<Field> highPriority = fields.values().stream().max((o1, o2) -> (int) (flogic
+                            .calcPriority(o1) - flogic.calcPriority(o2)));
+                    if (highPriority.isPresent()) {
+                        if (highPriority.get().getYields() > 60) {
+                            goHarvest(graphVertices, highPriority);
+                        } else if (highPriority.get().getWeeds() > 60) {
+                            goCultivation(graphVertices, highPriority);
+                        } else if (highPriority.get().getMinerals() < 30) {
+                            goFertilization(graphVertices, highPriority);
+                        }
                     }
                 } catch (InterruptedException e) {
                     LOGGER.info("Interrupted");
@@ -442,12 +434,11 @@ public class MainController implements Initializable {
                     return;
                 }
                 State calc = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractorPath.get(i),
-                       tractorPath.get(i + 1));
+                        tractorPath.get(i + 1));
 
                 // Machine learning - tworzenie modelu i uczenie sie z zestawu treningowego
                 Classifier test_model = (Classifier) new LMT();
-                try
-                {
+                try {
                     ArffLoader loader = new ArffLoader();
                     loader.setFile(new File("testprojekt.arff"));
                     Instances isTrainingSet = loader.getDataSet();
@@ -518,10 +509,18 @@ public class MainController implements Initializable {
 
                                 double test_result;
                                 test_result = TestProjectWIP.lm(yields, weeds, minerals, fvWekaAttributes, test_model);
-                               // System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " + OLD_ID);
-                                if (test_result == 0) {field.setYields(0); System.out.println("Na polu Nr " + IIDD + " o wartościach " + yields + " " + weeds + " " + minerals + " Wykonałem : Zebranie Plonów");}
-                                else if (test_result == 1) {field.setWeeds(0); System.out.println("Na polu Nr " + IIDD + " o wartościach " + yields + " " + weeds + " " + minerals + " Wykonałem : Zerwanie Chwastów");}
-                                else if (test_result == 2) {field.setMinerals(100); System.out.println("Na polu Nr " + IIDD + " o wartościach " + yields + " " + weeds + " " + minerals + " Wykonałem : Nawóz Pola");}
+                                // System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " +
+                                // OLD_ID);
+                                if (test_result == 0) {
+                                    field.setYields(0);
+                                    System.out.println("Wykonałem : Zabranie Plonów na polu Nr " + IIDD);
+                                } else if (test_result == 1) {
+                                    field.setWeeds(0);
+                                    System.out.println("Wykonałem : Zerwanie Chwastów na polu Nr " + IIDD);
+                                } else if (test_result == 2) {
+                                    field.setMinerals(100);
+                                    System.out.println("Wykonałem : Nawóz Pola na polu Nr " + IIDD);
+                                }
                                 OLD_ID = IIDD;
                               //  System.out.println("Wykonałem : ")
                             }
