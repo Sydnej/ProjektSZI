@@ -231,6 +231,7 @@ public class MainController implements Initializable {
     }
 
     private void startWeather() {
+        System.out.print("startWeather");
         weather.setSeason(Season.SPRING);
         weatherLoop = new WeatherLoop(tractor.getArea(), weather);
         Thread thread = new Thread(weatherLoop);
@@ -339,7 +340,7 @@ public class MainController implements Initializable {
 
     @FXML
     public void handleDecisionTreeButton() {
-        //weatherLoop.TreeDecision.C45();
+        weatherLoop.TreeDecision.C45();
         //TreeDecision.C45();
         //System.out.println(weatherLoop.TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
     }

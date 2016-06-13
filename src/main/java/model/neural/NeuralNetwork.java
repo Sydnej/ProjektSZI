@@ -51,6 +51,14 @@ public class NeuralNetwork {
         return layers.size();
     }
 
+    public void setInputSignals(double... signals) {
+        for(int i=0; i<getLayer(0).size(); i++) {
+            getLayer(0).get(i).setSignal(0, signals[0]);
+            getLayer(0).get(i).setSignal(1, signals[1]);
+            getLayer(0).get(i).setSignal(2, signals[2]);
+        }
+    }
+
     public void connectAllLayers() {
         for(int i=0; i<getNumberOfLayers()-1; i++) {
             for(int j=0; j<layers.get(i).size(); j++) {
@@ -84,10 +92,6 @@ public class NeuralNetwork {
     }
 
     public void learnByBackpropagation(LearningSet learningSet) {
-        // temperature
-        // humidity
-        // rain
-
         for(LearningSet.LearningElement element : learningSet.getLearningSet()) {
             for(Neuron neuron : layers.get(0)) {
                 neuron.setSignal(0, element.getFirstValue());
