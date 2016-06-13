@@ -142,7 +142,7 @@ public class MainController implements Initializable {
                 positionY = positionY - 0.5;
                 break;
         }
-        LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
+    //    LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
     }
 
     @Override

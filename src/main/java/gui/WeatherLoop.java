@@ -74,7 +74,7 @@ class WeatherLoop implements Runnable {
         else temp = "wysoka";
 
 
-        TreeDecision.C45();
+      //  TreeDecision.C45();
 
         System.out.println(TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
 /*
