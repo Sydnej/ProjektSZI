@@ -141,7 +141,7 @@ public class MainController implements Initializable {
                 positionY = positionY - 0.5;
                 break;
         }
-        LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
+     //   LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
     }
 
     @Override
@@ -488,27 +488,40 @@ public class MainController implements Initializable {
 
                  //   goViaPoints(UnifiedCostSearch.buildPath(calc));
                     for (GraphVertex point : UnifiedCostSearch.buildPath(calc)) {
-                        goToThePoint(point.getX(), point.getY());
+
                         int IIDD = point.getId();
 
+                        //System.out.println("ZMIERZAM DO " + IIDD);
+                        Map<Integer, Field> fields = tractor.getArea().getFields();
+
+                        Field field = fields.get(point.getId());
+                        if(IIDD < 20 && IIDD > 0 && IIDD != OLD_ID) {
+                            Platform.runLater(() -> {
+                                fieldsTable.getSelectionModel().select(field);
+                                fieldsTable.scrollTo(field);
+                            });
+                        }
+                        goToThePoint(point.getX(), point.getY());
                         if(IIDD < 20 && IIDD > 0 && IIDD != OLD_ID) {
 
-                            Map<Integer, Field> fields = tractor.getArea().getFields();
 
-                            Field field = fields.get(point.getId());
 
                             int yields = field.getYields();
                             int weeds = field.getWeeds();
                             int minerals = field.getMinerals();
 
                             if( IIDD != OLD_ID) {
+
+
+
                                 double test_result;
                                 test_result = TestProjectWIP.lm(yields, weeds, minerals, fvWekaAttributes, test_model);
-                                System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " + OLD_ID);
-                                if (test_result == 0) field.setYields(0);
-                                else if (test_result == 1) field.setWeeds(0);
-                                else if (test_result == 2) field.setMinerals(100);
+                               // System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " + OLD_ID);
+                                if (test_result == 0) {field.setYields(0); System.out.println("Wykonałem : Zabranie Plonów na polu Nr " + IIDD);}
+                                else if (test_result == 1) {field.setWeeds(0); System.out.println("Wykonałem : Zerwanie Chwastów na polu Nr " + IIDD);}
+                                else if (test_result == 2) {field.setMinerals(100); System.out.println("Wykonałem : Nawóz Pola na polu Nr " + IIDD);}
                                 OLD_ID = IIDD;
+                              //  System.out.println("Wykonałem : ")
                             }
 
 

@@ -33,10 +33,12 @@ public class Field {
         for (int i = 0; i < 4; i++) {
             corners[i] = new FieldVertex();
         }
+
         Random random = new Random();
         yields.setValue(Math.abs(random.nextInt() % 101));
         weeds.setValue(Math.abs(random.nextInt() % 101));
         minerals.setValue(Math.abs(random.nextInt() % 101));
+     //   minerals.setValue(0);
         humidity.setValue(Math.abs(random.nextInt() % 101));
     }
 

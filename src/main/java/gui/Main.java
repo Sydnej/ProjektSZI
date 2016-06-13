@@ -87,7 +87,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
             Pane page = loader.load();
             primaryStage.setTitle("Traktor");
-            primaryStage.setFullScreen(true);
+ //           primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             Scene primaryScene = new Scene(page);
             primaryStage.setScene(primaryScene);
