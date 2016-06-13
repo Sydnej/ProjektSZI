@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.PrintWriter;
+import weka.classifiers.trees.LMT;
 import DecisionTree.C45;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 import model.FuzzyLogic;
 import model.GeneticAlg.Tour;
 import model.Tractor;
+import MachineLearning.TestProjectWIP;
 import model.area.Field;
 import model.area.GraphVertex;
 import model.weather.Season;
@@ -25,10 +28,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ucs.State;
 import ucs.UnifiedCostSearch;
+import weka.classifiers.Classifier;
+import weka.classifiers.functions.SMO;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instances;
+import weka.core.converters.ArffLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -172,6 +182,14 @@ public class MainController implements Initializable {
         tractorThread.start();
     }
 
+    private void startGeneticTractor2() {
+        stopTractor();
+        tractorThread = new Thread(new GeneticTractorRunnable2());
+        tractorThread.setName("Tractor thread");
+        tractorThread.setDaemon(true);
+        tractorThread.start();
+    }
+
     private void goHarvest(Map<Integer, GraphVertex> graphVertices, Optional<Field> max) throws InterruptedException {
         Field field = max.get();
         goToField(graphVertices, field);
@@ -304,8 +322,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void handleGeneticTractor() {
-        startGeneticTractor();
+        private void handleGeneticTractor() {
+            startGeneticTractor();
+    }
+
+    @FXML
+    private void handleGeneticTractor2() {
+        startGeneticTractor2();
     }
 
     @FXML
@@ -396,4 +419,105 @@ public class MainController implements Initializable {
             }
         }
     }
+
+
+
+    private class GeneticTractorRunnable2 implements Runnable {
+
+        @Override
+        public void run() {
+            Thread.currentThread().setName("GeneticTractorThread2");
+            List<GraphVertex> tractorPath = new ArrayList<>();
+            for (int i = 0; i < Tour.tourSize2(); i++) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+                tractorPath.add(Tour.getVertex2(i));
+            }
+            for (int i = 0; i < model.GeneticAlg.Tour.tourSize2() - 1; i++) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+                State calc = UnifiedCostSearch.calc(tractor.getArea().getGraphVertices(), tractorPath.get(i),
+                       tractorPath.get(i + 1));
+
+                // Machine learning - tworzenie modelu i uczenie sie z zestawu treningowego
+                Classifier test_model = (Classifier) new LMT();
+                try
+                {
+                    ArffLoader loader = new ArffLoader();
+                    loader.setFile(new File("testprojekt.arff"));
+                    Instances isTrainingSet = loader.getDataSet();
+                    int classIdx = 3;
+                    isTrainingSet.setClassIndex(classIdx);
+
+                    test_model.buildClassifier(isTrainingSet);
+
+                }catch(Exception e){
+                e.printStackTrace();
+
+
+
+            }
+
+                Attribute Attribute1 = new Attribute("yields");
+                Attribute Attribute2 = new Attribute("weeds");
+                Attribute Attribute3 = new Attribute("minerals");
+
+                FastVector fvNominalVal = new FastVector(3);
+                fvNominalVal.addElement("harvest");
+                fvNominalVal.addElement("cultivation");
+                fvNominalVal.addElement("fertilization");
+                Attribute ClassAttribute = new Attribute("priority", fvNominalVal);
+
+                FastVector fvWekaAttributes = new FastVector(4);
+                fvWekaAttributes.addElement(Attribute1);
+                fvWekaAttributes.addElement(Attribute2);
+                fvWekaAttributes.addElement(Attribute3);
+                fvWekaAttributes.addElement(ClassAttribute);
+
+
+
+
+
+                try {
+
+
+
+
+                 //   goViaPoints(UnifiedCostSearch.buildPath(calc));
+                    for (GraphVertex point : UnifiedCostSearch.buildPath(calc)) {
+                        goToThePoint(point.getX(), point.getY());
+                        int IIDD = point.getId();
+
+
+
+                        //Zalozmy ze dostaje tutaj yields, weeds, minerales dla punktu w ktorym jestem
+                        int jelds = 45;
+                        int lidz = 45;
+                        int rocks = 45;
+                        double test_result;
+                        test_result = TestProjectWIP.lm(jelds,lidz,rocks, fvWekaAttributes, test_model);
+                        if(test_result == 0){System.exit(0);}
+                        // TEst result to 0 przy harvest, 1 przy fertilization, 2 przy cultivation
+
+                        try {
+                        PrintWriter writer = new PrintWriter("plslearn.txt", "UTF-8");
+                        writer.println("Wynik testu to "+ test_result);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+
+                    }
+                } catch (InterruptedException e) {
+                    LOGGER.info("Interrupted");
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
 }

@@ -110,6 +110,7 @@
                         <children>
                             <Button onAction="#handleTractor" text="Start Fuzzy + UCS"/>
                             <Button onAction="#handleGeneticTractor" text="Start Genetic + Neural Network"/>
+                            <Button onAction="#handleGeneticTractor2" text="Start Genetic + Machine Learning"/>
                             <Button onAction="#handleStopTractor" text="StopTractor"/>
                         </children>
                     </VBox>

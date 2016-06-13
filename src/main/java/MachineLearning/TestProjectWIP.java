@@ -13,6 +13,27 @@ import java.io.File;
 // Na podstawie zwierzat ktore wprowadzamy okreslamy prognoze rasy dla zwierzecian na podstawie jego wysokosci, wagi i kraju wystepowania
 public class TestProjectWIP {
 
+
+    public static double lm(int a, int b, int c, FastVector fvWekaAttributes, Classifier test_model)
+    {
+        Instances evalSet = new Instances("Rel", fvWekaAttributes, 10);
+        evalSet.setClassIndex(3);
+        Instance testInstance = new DenseInstance(4);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(0), a);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(1), b);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(2), c);
+        evalSet.add(testInstance);
+
+        double ClassLabel = 100;
+        try {
+            ClassLabel = test_model.classifyInstance(evalSet.instance(0));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return ClassLabel;
+    }
+
+
     public static void main(String[] args) throws Exception {
 
 
@@ -60,6 +81,11 @@ public class TestProjectWIP {
         int b = sc.nextInt();
         int c = sc.nextInt();
 
+
+         /*   double test_result;
+            test_result = TestProjectWIP.lm(a,b,c, fvWekaAttributes, model);
+            if(test_result == 0){System.exit(0);}
+*/
         //Tworzymy test data
         Instances evalSet = new Instances("Rel", fvWekaAttributes, 10);
         evalSet.setClassIndex(3);
@@ -91,6 +117,11 @@ public class TestProjectWIP {
         isTrainingSet.add(Learn);
 
         }
+
+
+
+
+
 
     }
 

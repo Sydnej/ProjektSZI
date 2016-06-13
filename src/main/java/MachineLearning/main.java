@@ -18,6 +18,17 @@ import java.text.DecimalFormat;
 //Wypisujemy prawdopodobienstwa przynalezenia do kazdej z  3 mozliwych klas
 //Algorytm LMT
 public class main {
+
+
+
+    public void test(int a, int b, int c)
+    {
+
+    }
+
+
+
+
     public static void main(String[] args) throws Exception {
 
 
