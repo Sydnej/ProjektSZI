@@ -509,18 +509,10 @@ public class MainController implements Initializable {
 
                                 double test_result;
                                 test_result = TestProjectWIP.lm(yields, weeds, minerals, fvWekaAttributes, test_model);
-                                // System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " +
-                                // OLD_ID);
-                                if (test_result == 0) {
-                                    field.setYields(0);
-                                    System.out.println("Wykonałem : Zabranie Plonów na polu Nr " + IIDD);
-                                } else if (test_result == 1) {
-                                    field.setWeeds(0);
-                                    System.out.println("Wykonałem : Zerwanie Chwastów na polu Nr " + IIDD);
-                                } else if (test_result == 2) {
-                                    field.setMinerals(100);
-                                    System.out.println("Wykonałem : Nawóz Pola na polu Nr " + IIDD);
-                                }
+                               // System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " + OLD_ID);
+                                if (test_result == 0) {field.setYields(0); System.out.println("Wykonałem : Zabranie Plonów na polu Nr " + IIDD);}
+                                else if (test_result == 1) {field.setWeeds(0); System.out.println("Wykonałem : Zerwanie Chwastów na polu Nr " + IIDD);}
+                                else if (test_result == 2) {field.setMinerals(100); System.out.println("Wykonałem : Nawóz Pola na polu Nr " + IIDD);}
                                 OLD_ID = IIDD;
                               //  System.out.println("Wykonałem : ")
                             }
