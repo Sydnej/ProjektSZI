@@ -13,9 +13,7 @@ import java.io.File;
 // Na podstawie zwierzat ktore wprowadzamy okreslamy prognoze rasy dla zwierzecian na podstawie jego wysokosci, wagi i kraju wystepowania
 public class TestProjectWIP {
 
-    public static void main(String[] args) throws Exception{
-
-
+    public static void main(String[] args) throws Exception {
 
 
         // ladujemy plik Arff z pelnymi danymi jako training set
@@ -29,7 +27,7 @@ public class TestProjectWIP {
         System.out.println("Training data: " + isTrainingSet);
 
         //Tworzymy klasyfikator
-        Classifier model = (Classifier)new SMO();
+        Classifier model = (Classifier) new SMO();
         model.buildClassifier(isTrainingSet);
 
 
@@ -46,7 +44,6 @@ public class TestProjectWIP {
         Attribute ClassAttribute = new Attribute("priority", fvNominalVal);
 
 
-
         // Deklarujemy vektor cech zlaczony z powzyszych atrybutow
         FastVector fvWekaAttributes = new FastVector(4);
         fvWekaAttributes.addElement(Attribute1);
@@ -54,7 +51,10 @@ public class TestProjectWIP {
         fvWekaAttributes.addElement(Attribute3);
         fvWekaAttributes.addElement(ClassAttribute);
 
-        System.out.println("Podaj dane:");
+
+        while (true)
+        {
+            System.out.println("Podaj dane:");
         Scanner sc = new Scanner(System.in);
         int a = sc.nextInt();
         int b = sc.nextInt();
@@ -64,9 +64,9 @@ public class TestProjectWIP {
         Instances evalSet = new Instances("Rel", fvWekaAttributes, 10);
         evalSet.setClassIndex(3);
         Instance testInstance = new DenseInstance(4);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(0), a);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(1), b);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(2),  c);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(0), a);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(1), b);
+        testInstance.setValue((Attribute) fvWekaAttributes.elementAt(2), c);
         evalSet.add(testInstance);
 
         System.out.println("Data do ewaluacji: " + evalSet.instance(0));
@@ -80,18 +80,17 @@ public class TestProjectWIP {
         System.out.println("Zalecane dzialanie: " + fvNominalVal.elementAt(d.intValue()));
 
 
-
         //Dodawanie uzyskanego wpisu do traning set
         Instance Learn = new DenseInstance(4);
-        Learn.setValue((Attribute)fvWekaAttributes.elementAt(0), a);
-        Learn.setValue((Attribute)fvWekaAttributes.elementAt(1), b);
-        Learn.setValue((Attribute)fvWekaAttributes.elementAt(2), c);
-        Learn.setValue((Attribute)fvWekaAttributes.elementAt(3),  fvNominalVal.elementAt(d.intValue()).toString());
+        Learn.setValue((Attribute) fvWekaAttributes.elementAt(0), a);
+        Learn.setValue((Attribute) fvWekaAttributes.elementAt(1), b);
+        Learn.setValue((Attribute) fvWekaAttributes.elementAt(2), c);
+        Learn.setValue((Attribute) fvWekaAttributes.elementAt(3), fvNominalVal.elementAt(d.intValue()).toString());
 
         // Dodajemy druga instancje do traning set
         isTrainingSet.add(Learn);
 
-
+        }
 
     }
 
