@@ -12,6 +12,7 @@ import model.weather.Weather;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 class WeatherLoop implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherLoop.class);
@@ -35,6 +36,7 @@ class WeatherLoop implements Runnable {
 
     @Override
     public void run() {
+        TreeDecision.C45();
         weedsNetwork.learnByBackpropagation(new LearningSet("weedsSet.txt"));
         mineralsNetwork.learnByBackpropagation(new LearningSet("mineralsSet.txt"));
         humidityNetwork.learnByBackpropagation(new LearningSet("humiditySet.txt"));
@@ -94,7 +96,7 @@ class WeatherLoop implements Runnable {
         }
         field.setHumidity(humidity);
 
-        
+
         FuzzyLogic2 flogic = new FuzzyLogic2();
 
         System.out.println("Deszcz: " + weatherRain);
@@ -119,18 +121,19 @@ class WeatherLoop implements Runnable {
         else if (weather.getTemperature() < 20) temp = "srednia";
         else temp = "wysoka";
 
-        TreeDecision.C45();
+
+        //TreeDecision.C45();
 
         System.out.println(TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
-/*
-        String dod = TreeDecision.MakeDecision(temp, humidit, weeds, minerals);
-        System.out.println("Wartość dod: " + dod );
+
+        String dod = TreeDecision.MakeDecision(temp, humidit, weed, miner);
+        //System.out.println("Wartość dod: " + dod );
         int dod2 = Integer.parseInt(dod);
-        System.out.println("Wartość dod2: " + dod2 );
+        //System.out.println("Wartość dod2: " + dod2 );
         if (field.getYields() < 100 && field.getYields() + dod2 < 100) {
             field.setYields(field.getYields() + dod2);
         }
-*/
+
         // if (rain > )
     }
 
