@@ -32,12 +32,13 @@ public class LearningSet {
         String projectPath = System.getProperty("user.dir");
         InputStream is;
         if(projectPath.contains("\\")) {
-            is = new FileInputStream(projectPath + "\\src\\neural\\learning\\" + fileName);
+            is = new FileInputStream(projectPath + "\\src\\main\\java\\model\\neural\\learning\\" + fileName);
         }
         else {
-            is = new FileInputStream(projectPath + "/src/neural/learning/" + fileName);
+            is = new FileInputStream(projectPath + "/src/main/java/model/neural/learning/" + fileName);
         }
         Scanner scanner = new Scanner(is);
+
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] stringValues = line.split(",");
