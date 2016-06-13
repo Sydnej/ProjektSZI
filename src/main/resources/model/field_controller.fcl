@@ -7,7 +7,7 @@ VAR_INPUT				// Definiuje zmienne wejsciowe
 END_VAR
 
 VAR_OUTPUT				// Definiuje zmienne wyjsciowe
-	fertilizationPriority : REAL;
+	Yields : REAL;
 	cultivationPriority : REAL;
 	harvestPriority : REAL;
 END_VAR

@@ -16,7 +16,7 @@ public class Bag {
 	private String name;
 
 	private List<Element> elementsInBag = new ArrayList<Element>();
-	// 結果的種類數
+	//
 	private int numberOfOutput;
 	
 
@@ -210,10 +210,10 @@ class newElement {
 
 	public newElement(String pogoda, String temperatura, String wilgotnosc, String wiatr) {
 
-		attDataMap.put("Pogoda", pogoda);
-		attDataMap.put("Temperatura", temperatura);
-		attDataMap.put("Wilgotnosc", wilgotnosc);
-		attDataMap.put("Wiatr", wiatr);
+		attDataMap.put("Temperatura", pogoda);
+		attDataMap.put("Wilgotnosc", temperatura);
+		attDataMap.put("Chwasty", wilgotnosc);
+		attDataMap.put("Mineraly", wiatr);
 
 
 	}

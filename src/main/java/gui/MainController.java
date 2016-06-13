@@ -100,6 +100,7 @@ public class MainController implements Initializable {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Thread tractorThread;
+   // public C45 TreeDecision = new C45();
 
     public void setSpeedTractor(int newSpeed) {
         tractorSpeed = newSpeed;
@@ -141,7 +142,7 @@ public class MainController implements Initializable {
                 positionY = positionY - 0.5;
                 break;
         }
-     //   LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
+        LOGGER.info("Moving: " + direction.name() + " " + positionX + " " + positionY);
     }
 
     @Override
@@ -338,9 +339,9 @@ public class MainController implements Initializable {
 
     @FXML
     public void handleDecisionTreeButton() {
-        C45 TreeDecision = new C45();
-        TreeDecision.C45();
-        System.out.println(TreeDecision.MakeDecision("overcast", "hot", "normal", "weak"));
+        //weatherLoop.TreeDecision.C45();
+        //TreeDecision.C45();
+        //System.out.println(weatherLoop.TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
     }
 
     @FXML

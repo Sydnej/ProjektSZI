@@ -64,9 +64,9 @@ public class TestProject {
         Instances evalSet = new Instances("Rel", fvWekaAttributes, 10);
         evalSet.setClassIndex(3);
         Instance testInstance = new DenseInstance(4);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(0), 90);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(1), 90);
-        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(2),  90);
+        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(0), 30);
+        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(1), 55);
+        testInstance.setValue((Attribute)fvWekaAttributes.elementAt(2),  10);
         evalSet.add(testInstance);
 
         System.out.println("Data do ewaluacji: " + evalSet.instance(0));
