@@ -426,6 +426,7 @@ public class MainController implements Initializable {
 
         @Override
         public void run() {
+            int OLD_ID = 0;
             Thread.currentThread().setName("GeneticTractorThread2");
             List<GraphVertex> tractorPath = new ArrayList<>();
             for (int i = 0; i < Tour.tourSize2(); i++) {
@@ -490,30 +491,33 @@ public class MainController implements Initializable {
                         goToThePoint(point.getX(), point.getY());
                         int IIDD = point.getId();
 
+                        if(IIDD < 20 && IIDD > 0 && IIDD != OLD_ID) {
+
+                            Map<Integer, Field> fields = tractor.getArea().getFields();
+
+                            Field field = fields.get(point.getId());
+
+                            int yields = field.getYields();
+                            int weeds = field.getWeeds();
+                            int minerals = field.getMinerals();
+
+                            if( IIDD != OLD_ID) {
+                                double test_result;
+                                test_result = TestProjectWIP.lm(yields, weeds, minerals, fvWekaAttributes, test_model);
+                                System.out.print("Test: " + test_result + " A ID TO " + IIDD + " A OLD ID TO " + OLD_ID);
+                                if (test_result == 0) field.setYields(0);
+                                else if (test_result == 1) field.setWeeds(0);
+                                else if (test_result == 2) field.setMinerals(100);
+                                OLD_ID = IIDD;
+                            }
 
 
-                        //Zalozmy ze dostaje tutaj yields, weeds, minerales dla punktu w ktorym jestem
-                        int jelds = 45;
-                        int lidz = 45;
-                        int rocks = 45;
-                        double test_result;
-                        test_result = TestProjectWIP.lm(jelds,lidz,rocks, fvWekaAttributes, test_model);
-                        if(test_result == 0){System.exit(0);}
-                        // TEst result to 0 przy harvest, 1 przy fertilization, 2 przy cultivation
-
-                        try {
-                        PrintWriter writer = new PrintWriter("plslearn.txt", "UTF-8");
-                        writer.println("Wynik testu to "+ test_result);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-
 
 
                     }
                 } catch (InterruptedException e) {
-                    LOGGER.info("Interrupted");
+                    //LOGGER.info("Interrupted");
                     Thread.currentThread().interrupt();
                 }
             }

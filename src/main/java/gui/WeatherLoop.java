@@ -53,6 +53,8 @@ class WeatherLoop implements Runnable {
         }
     }
 
+
+
     public int getNumberOfDays() {
         return numberOfDays;
     }
