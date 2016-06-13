@@ -44,6 +44,7 @@ class WeatherLoop implements Runnable {
         while (true) {
             Platform.runLater(weather::update);
             area.getFields().values().forEach(this::updateProperties);
+            System.out.print("while");
             try {
                 sleepOneDay();
             } catch (InterruptedException e) {
@@ -124,8 +125,9 @@ class WeatherLoop implements Runnable {
 
         //TreeDecision.C45();
 
-        System.out.println(TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
+        //System.out.println(TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
 
+        System.out.println(temp + " " + humidit + " " + weed + " " + miner);
         String dod = TreeDecision.MakeDecision(temp, humidit, weed, miner);
         //System.out.println("Wartość dod: " + dod );
         int dod2 = Integer.parseInt(dod);

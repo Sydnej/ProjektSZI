@@ -231,6 +231,7 @@ public class MainController implements Initializable {
     }
 
     private void startWeather() {
+        System.out.print("startWeather");
         weather.setSeason(Season.SPRING);
         weatherLoop = new WeatherLoop(tractor.getArea(), weather);
         Thread thread = new Thread(weatherLoop);
