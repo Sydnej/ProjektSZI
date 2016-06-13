@@ -7,9 +7,7 @@ VAR_INPUT				// Definiuje zmienne wejsciowe
 END_VAR
 
 VAR_OUTPUT				// Definiuje zmienne wyjsciowe
-	Yields : REAL;
-	cultivationPriority : REAL;
-	harvestPriority : REAL;
+	priority : REAL;
 END_VAR
 
 FUZZIFY yields
@@ -30,29 +28,11 @@ FUZZIFY weeds
    	TERM much := (55, 0) (75, 1);
 END_FUZZIFY
 
-DEFUZZIFY fertilizationPriority
+DEFUZZIFY priority
 	TERM low := (0,1) (20,1) (40,0);
 	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (100,1);
-
-	
-	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
-	DEFAULT := 0;		
-END_DEFUZZIFY
-
-DEFUZZIFY cultivationPriority
-	TERM low := (0,1) (20,1) (40,0);
-	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (100,1);
-
-	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
-	DEFAULT := 0;
-END_DEFUZZIFY
-
-DEFUZZIFY harvestPriority
-	TERM low := (0,1) (20,1) (40,0);
-	TERM middle := (30,0) (50,1) (60,0);
-	TERM high := (50,0) (70,1) (100,1);
+	TERM high := (50,0) (70,1) (85,0);
+	TERM very_high := (70,0) (85,1) (100,1);
 
 	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
 	DEFAULT := 0;
@@ -63,15 +43,25 @@ RULEBLOCK No1
 	ACT : MIN;			// Uzycie  'min' jako metody aktywacji
 	ACCU : MAX;			// Metoda agregacji - 'max'
 
-	RULE 1 : IF weeds IS much THEN cultivationPriority IS high;
-	RULE 2 : IF weeds IS little THEN cultivationPriority IS low;
-	RULE 3 : IF weeds IS middle THEN cultivationPriority IS middle;
-	RULE 4 : IF minerals IS little THEN fertilizationPriority IS high;
-	RULE 5 : IF minerals IS middle THEN fertilizationPriority IS middle;
-	RULE 6 : IF minerals IS much THEN fertilizationPriority IS low;
-	RULE 7 : IF yields IS much THEN harvestPriority IS high;
-	RULE 8 : IF yields IS middle THEN harvestPriority IS middle;
-	RULE 9 : IF yields IS little THEN harvestPriority IS low;
+	RULE 1 : IF yields IS much AND weeds is much THEN priority IS very_high;
+	RULE 2 : IF yields IS much AND minerals is little THEN priority IS very_high;
+	RULE 3 : IF weeds IS much AND minerals is little THEN priority IS very_high;
+
+	RULE 4 : IF weeds IS much AND minerals is middle THEN priority IS high;
+	RULE 5 : IF yields IS much AND minerals is middle THEN priority IS high;
+	RULE 6 : IF weeds IS much AND yields is middle THEN priority IS high;
+	RULE 7 : IF yields IS much AND weeds is middle THEN priority IS high;
+	RULE 8 : IF minerals IS little AND weeds is middle THEN priority IS high;
+	RULE 9 : IF minerals IS little AND yields is middle THEN priority IS high;
+
+	RULE 10 : IF minerals IS little OR yields IS much OR weeds IS much THEN priority IS middle;
+
+	RULE 11 : IF yields IS middle AND weeds is middle THEN priority IS low;
+    RULE 12 : IF yields IS middle AND minerals is middle THEN priority IS low;
+    RULE 13 : IF weeds IS middle AND minerals is middle THEN priority IS low;
+
+    RULE 14 : IF yields IS little OR yields IS middle OR yields IS much OR minerals IS little OR minerals IS middle
+    OR minerals IS much OR weeds IS little OR weeds IS middle OR weeds IS much THEN priority IS low;
 
 END_RULEBLOCK
 
