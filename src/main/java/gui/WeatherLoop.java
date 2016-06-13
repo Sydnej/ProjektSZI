@@ -74,10 +74,9 @@ class WeatherLoop implements Runnable {
         else temp = "wysoka";
 
 
+        TreeDecision.C45();
 
-        //TreeDecision.C45();
-
-        //System.out.println(TreeDecision.MakeDecision("nieska", "niskia", "niskie", "niskie"));
+        System.out.println(TreeDecision.MakeDecision("niska", "niska", "niskie", "niskie"));
 /*
         String dod = TreeDecision.MakeDecision(temp, humidit, weeds, minerals);
         System.out.println("Wartość dod: " + dod );
@@ -87,9 +86,8 @@ class WeatherLoop implements Runnable {
             field.setYields(field.getYields() + dod2);
         }
 */
-       // if (rain > )
+        // if (rain > )
     }
-
 
 
     public int getNumberOfDays() {
